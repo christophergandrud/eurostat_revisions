@@ -8,10 +8,10 @@ library(dplyr)
 library(ggplot2)
 
 # Set working directory. Change as needed
-setwd('~/Desktop/Eurostat_revisions/')
+setwd('/git_repositories/eurostat_revisions/')
 
 # Load revisions data
-revisions <- import('comb_cumulative.csv')
+revisions <- import('data_cleaning/comb_cumulative.csv')
 
 # Load election timing data
 timing <- import('https://raw.githubusercontent.com/christophergandrud/yrcurnt_corrected/master/data/yrcurnt_corrected.csv') %>% select(-V5)
