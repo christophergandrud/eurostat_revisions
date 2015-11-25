@@ -9,6 +9,7 @@ library(lubridate)
 library(countrycode)
 library(ggplot2)
 library(devtools)
+library(stargazer)
 
 # Set working directory. Change as needed
 setwd('/git_repositories/eurostat_revisions/')
@@ -65,9 +66,18 @@ m2_2 <- lm(cum_revision ~ yrcurnt_corrected + finstress_mean +
                years_since_original +
                as.factor(country), data = deficit)
 
+# Create results tables
+stargazer(m1_1, m1_2, m1_3, omit = 'as.factor*', 
+          out.header = F,
+          out = 'working_paper/tables/debt_regressions.tex')
+
 
 ## Plot marginal effect
-plot_me(m1_3, term1 = 'yrcurnt_corrected', term2 = 'finstress_mean',
+finstress_elect_me <- plot_me(m1_3, term1 = 'yrcurnt_corrected', 
+                              term2 = 'finstress_mean',
         fitted2 = seq(0.2, 0.75, by = 0.05)) +
     xlab('\nAnnual FinStress Mean') + 
-    ylab('Marginal Effect of Election Timing\n') + ggtitle('Debt Revisions\n')
+    ylab('Marginal Effect of Election Timing\n')
+
+ggsave(finstress_elect_me, filename = 'working_paper/figures/finstress_elect_me.pdf')
+
