@@ -8,9 +8,13 @@ library(dplyr)
 library(lubridate)
 library(countrycode)
 library(ggplot2)
+library(devtools)
 
 # Set working directory. Change as needed
 setwd('/git_repositories/eurostat_revisions/')
+
+# Load plot function
+devtools::source_gist('d270ff55c2ca26286e90')
 
 # Load revisions data
 revisions <- import('data_cleaning/comb_cumulative.csv')
@@ -40,19 +44,30 @@ comb <- merge(comb, finstress_yr_mean, by = c('country', 'year'))
     
 # Plot debt revisions
 debt <- comb %>% filter(component == 'debt')
-ggplot(debt, aes(yrcurnt_corrected, cum_revision)) +
-    geom_point() +
-    stat_smooth(method = 'lm', se = F) +
-    facet_wrap(~ country) +
-    theme_bw()
 
-m1 <- lm(cum_revision ~ yrcurnt_corrected + 
-             as.factor(country) + as.factor(years_since_original), data = debt)
+m1_1 <- lm(cum_revision ~ yrcurnt_corrected + years_since_original +
+             as.factor(country), data = debt)
 
-m1.2 <- lm(cum_revision ~ yrcurnt_corrected + finstress_mean +
-               as.factor(country) + as.factor(years_since_original), data = debt)
+m1_2 <- lm(cum_revision ~ yrcurnt_corrected + finstress_mean + 
+               years_since_original +
+               as.factor(country), data = debt)
+
+m1_3 <- lm(cum_revision ~ yrcurnt_corrected * finstress_mean + 
+               years_since_original +
+               as.factor(country), data = debt)
 
 
 deficit <- comb %>% filter(component == 'deficit')
-m2 <- lm(cum_revision ~ yrcurnt_corrected + 
-         as.factor(country) + as.factor(years_since_original), data = deficit)
+m2_1 <- lm(cum_revision ~ yrcurnt_corrected + years_since_original +
+         as.factor(country), data = deficit)
+
+m2_2 <- lm(cum_revision ~ yrcurnt_corrected + finstress_mean + 
+               years_since_original +
+               as.factor(country), data = deficit)
+
+
+## Plot marginal effect
+plot_me(m1_3, term1 = 'yrcurnt_corrected', term2 = 'finstress_mean',
+        fitted2 = seq(0.2, 0.75, by = 0.05)) +
+    xlab('\nAnnual FinStress Mean') + 
+    ylab('Marginal Effect of Election Timing\n') + ggtitle('Debt Revisions\n')
