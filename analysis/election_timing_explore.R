@@ -46,30 +46,55 @@ comb <- merge(comb, finstress_yr_mean, by = c('country', 'year'))
 # Plot debt revisions
 debt <- comb %>% filter(component == 'debt')
 
-m1_1 <- lm(cum_revision ~ yrcurnt_corrected + years_since_original +
+m1_1 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
              as.factor(country), data = debt)
 
-m1_2 <- lm(cum_revision ~ yrcurnt_corrected + finstress_mean + 
-               years_since_original +
+m1_2 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected + 
+               finstress_mean +
                as.factor(country), data = debt)
 
-m1_3 <- lm(cum_revision ~ yrcurnt_corrected * finstress_mean + 
-               years_since_original +
+m1_3 <- lm(cum_revision ~ years_since_original + 
+               yrcurnt_corrected * finstress_mean +
                as.factor(country), data = debt)
 
 
 deficit <- comb %>% filter(component == 'deficit')
-m2_1 <- lm(cum_revision ~ yrcurnt_corrected + years_since_original +
+m2_1 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
          as.factor(country), data = deficit)
 
-m2_2 <- lm(cum_revision ~ yrcurnt_corrected + finstress_mean + 
-               years_since_original +
+m2_2 <- lm(cum_revision ~ years_since_original +
+               yrcurnt_corrected + finstress_mean +
+               as.factor(country), data = deficit)
+
+m2_3 <- lm(cum_revision ~ years_since_original +
+               yrcurnt_corrected*finstress_mean +
                as.factor(country), data = deficit)
 
 # Create results tables
+vars <- c('Yrs. Since Original', 'Yrs. to Election', 'FinStress',
+          'Yrs. to Elect. * FinStress')
+
+
 stargazer(m1_1, m1_2, m1_3, omit = 'as.factor*', 
           out.header = F,
+          title = 'Linear Regression Prediction of Debt Revisions',
+          dep.var.labels = 'Cumulative Debt Revisions',
+          covariate.labels = vars,
+          label = 'debt_results',
+          add.lines = list(c('Country FE?', 'Yes', 'Yes', 'Yes')),
+          font.size = 'footnotesize',
           out = 'working_paper/tables/debt_regressions.tex')
+
+
+stargazer(m2_1, m2_2, m2_3, omit = 'as.factor*', 
+          out.header = F,
+          title = 'Linear Regression Prediction of Deficit Revisions',
+          dep.var.labels = 'Cumulative Deficit Revisions',
+          covariate.labels = vars,
+          label = 'debt_results',
+          add.lines = list(c('Country FE?', 'Yes', 'Yes', 'Yes')),
+          font.size = 'footnotesize',
+          out = 'working_paper/tables/deficit_regressions.tex')
 
 
 ## Plot marginal effect
