@@ -26,7 +26,7 @@
 \usepackage{float}
 
 
-\title{Fiscal Rule Stretching in Europe During Crises}
+\title{Fiscal Rule Stretching in Europe During Financial Market Stress and Crises}
 
 \author{Christopher Gandrud \\ \emph{City University London} \\ \emph{Hertie School of Governance}\footnote{Please contact Christopher Gandrud
 (\href{mailto:christopher.gandrud@city.ac.uk}{\nolinkurl{christopher.gandrud@city.ac.uk}}) or Mark Hallerberg (\href{mailto:hallerberg@hertie-school.org}{\nolinkurl{hallerberg@hertie-school.org}}).}
@@ -69,7 +69,7 @@ Mark Hallerberg \\ \emph{Hertie School of Governance}}
 
 \subsection{Eurostat revisions}
 
-To test these hypotheses we gathered all of the revisions that Eurostat made to EU member debt and deficit figures from 2003 through 2013. [WEBSITE URL] Eurostat publishes revisions bi-annually--typically once at the end of April and again again in late October. These revisions cover government finance statistics released within the previous four years. As such, the unit of analysis in the following regressions is biannual revision point . For every year that government statistics are revised, there are up to seven revision points.\footnote{The first revisions occur October of the initial reporting year.}
+To test these hypotheses we gathered all of the revisions that Eurostat made to EU member debt and deficit figures from 2003 through 2013. [WEBSITE URL] Eurostat publishes revisions bi-annually--typically once at the end of April and again again in late October. These revisions cover government finance statistics released within the previous four years. As such, the unit of analysis in the following regressions is biannual revision point for each fiscal year. For every year that government statistics are revised, there are up to seven revision points.\footnote{The first revisions occur October of the initial reporting year.}
 
 We created a variable of cumulative revisions over these four year periods. This variable ranged from -1.1 and 12.7 percent of GDP for debt statistics and -4.5 and 1.1 percent of GDP for deficit statistics. It is important to note that all of these revisions were not due to revisions in the denominator, i.e. GDP. Eurostat reports these types of changes separately. As \cite{DeCastro2013} found for similar Eurostat data in shorter pre-financial crisis sample, there is a clear tendency for debt statistics to be revised upward and deficit statistics downward, indicating that policies are more expensive than initially reported.
 
@@ -79,7 +79,9 @@ To test whether governments are more likely to stretch the rules closer to elect
 
 To examine how responding to financial market stress may exacerbate governments' fiscal accounting rule stretching behavior, we included Gandrud and Hallerberg's \citeyearpar{finstress_paper} continuous ``FinStress'' measure of real-time perceptions of financial market stress. This measure is created by analyzing monthly content from Economist Intelligence Unit texts on banking and financial markets using a statistical method called kernel principal component analysis. Unlike previous post-hoc dichotomous measures of financial crisis \citep[e.g. measures compiled by][]{Laeven2012,ReinhartRog2010}, the authors argue this measure captures what we are most interested in when trying to understand policy choices: what stress policy-makers perceived and so responded to at the time. It also does not rely on ad hoc methods of determining when a crisis ended, but instead charts its perceived intensity over time. To make this measure comparable with our other variables, we found yearly averages. FinStress is able to vary between zero and one, with higher values indicating more perceived financial market stress. In the sample it varies between 0.12 and 0.76.
 
-We would expect on average that the cumulative revisions to grow over the course of the four year period during which they are revised. So we include a variable of years since the original year that the revised figure is from on the right-hand side as well.
+Because hypothesize that the effect of election timing on rule-stretching will increase at higher levels of financial market stress, we will focus on interacting FinStress with the election timing variable.
+
+As Eurostat has more time to examine member state government policies, e.g. how separate they are in practice from the government sector, we would expect on average that the cumulative revisions will grow over the course of the four year period during which they are revised. So we also include a variable counting the years since the original year that the revised figure is from on the right-hand side.
 
 \input{tables/debt_regressions.tex}
 
@@ -88,6 +90,8 @@ We would expect on average that the cumulative revisions to grow over the course
 \subsection{Results}
 
 Tables \ref{debt_results} and \ref{deficit_results} showing results from linear regressions with cumulative debt and deficit revisions, respectively, as the dependent variable. All models include country fixed effects.
+
+We can see in Table \ref{deficit_results} that election timing is estimated to have a negative effect on debt revisions in models where it is not interacted with FinStress. As
 
 \begin{figure}
     \caption{Marginal Effect of Election Timing (years to election) at Various Levels of Financial Market Stress on Debt Revisions}
