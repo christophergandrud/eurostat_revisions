@@ -21,7 +21,7 @@ devtools::source_gist('d270ff55c2ca26286e90')
 revisions <- import('data_cleaning/comb_cumulative.csv')
 
 # Load election timing data
-timing <- import('https://raw.githubusercontent.com/christophergandrud/yrcurnt_corrected/master/data/yrcurnt_original_corrected.csv') %>% select(-yrcurnt, -X)
+timing <- import('https://raw.githubusercontent.com/christophergandrud/yrcurnt_corrected/master/data/yrcurnt_original_corrected.csv') %>% select(-yrcurnt)
 
 # Load FinStress and create annual averages
 FinStress <- rio::import("http://bit.ly/1LFEnhM")
@@ -39,9 +39,20 @@ finstress_yr_mean$country <- countrycode(finstress_yr_mean$iso2c,
                                          origin = 'iso2c', 
                                          destination = 'country.name')
 
+## Import Endogenous Election Indicator from Hallerberg and Wehner ------
+endog_election <- import('data_cleaning/raw/endogenous_elections.csv') %>%
+    select(country, year, `Elect-endogHW`, `Elect-predHW`) %>%
+    rename(endog_electionHW = `Elect-endogHW`) %>%
+    rename(endog_predHW = `Elect-predHW`)
+
+endog_election <- endog_election[!duplicated(endog_election[, 1:2]), ]
+
+endog_election <- endog_election %>% iso_oecd
+
 ## Combine ------
 comb <- merge(timing, revisions, by = c('country', 'year'))
 comb <- merge(comb, finstress_yr_mean, by = c('country', 'year'))
+comb <- merge(comb, endog_election, by = c('country', 'year'), all.x = T)
     
 ## Estimate models -------
 # debt revisions
@@ -56,6 +67,13 @@ m1_2 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
 
 m1_3 <- lm(cum_revision ~ years_since_original + 
                yrcurnt_corrected * finstress_mean +
+               as.factor(country), data = debt)
+
+debt$elect_dummy <- 0
+debt$elect_dummy[debt$yrcurnt_corrected == 0] <- 1
+
+m1_4 <- lm(cum_revision ~ years_since_original + 
+               elect_dummy + finstress_mean + endog_predHW +
                as.factor(country), data = debt)
 
 # deficit revisions
@@ -155,4 +173,4 @@ country_predictions <-ggplot(predictions, aes(yrcurnt_corrected, fit,
     ylab('Predicted Cumulative Debt Revision\nAfter 3 Years (% GDP)\n') +
     theme_bw()
 
-ggsave(finstress_elect_me, filename = 'working_paper/figures/finstress_elect_me.pdf')
+ggsave(country_predictions, filename = 'working_paper/figures/country_predict.pdf')
