@@ -61,19 +61,24 @@ debt <- comb %>% filter(component == 'debt')
 m1_1 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
              as.factor(country), data = debt)
 
-m1_2 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected + 
+m1_2 <- lm(cum_revision ~ years_since_original + 
+               endog_electionHW +
+               as.factor(country), data = debt)
+
+m1_3 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected + 
                finstress_mean +
                as.factor(country), data = debt)
 
-m1_3 <- lm(cum_revision ~ years_since_original + 
+m1_4 <- lm(cum_revision ~ years_since_original + 
                yrcurnt_corrected * finstress_mean +
                as.factor(country), data = debt)
 
+# Creat election year dummy
 debt$elect_dummy <- 0
 debt$elect_dummy[debt$yrcurnt_corrected == 0] <- 1
 
-m1_4 <- lm(cum_revision ~ years_since_original + 
-               elect_dummy + finstress_mean + endog_predHW +
+m1_5 <- lm(cum_revision ~ years_since_original + 
+               endog_electionHW*finstress_mean +
                as.factor(country), data = debt)
 
 # deficit revisions
@@ -90,22 +95,25 @@ m2_3 <- lm(cum_revision ~ years_since_original +
                as.factor(country), data = deficit)
 
 ## Create results tables -------
-vars <- c('Yrs. Since Original', 'Yrs. to Election', 'FinStress',
-          'Yrs. to Elect. * FinStress')
+vars <- c('Yrs. Since Original', 'Yrs. to Election', 'Required Election',
+          'FinStress', 'Yrs. to Elect. * FinStress', 
+          'Required Elect. * FinStress')
 
 
-stargazer(m1_1, m1_2, m1_3, omit = 'as.factor*', 
+stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, omit = 'as.factor*', 
+          omit.stat = 'f', # so that it fits on the page
           out.header = F,
           title = 'Linear Regression Estimation of Debt Revisions',
           dep.var.labels = 'Cumulative Debt Revisions',
           covariate.labels = vars,
           label = 'debt_results',
           add.lines = list(c('Country FE?', 'Yes', 'Yes', 'Yes')),
-          font.size = 'footnotesize',
+          font.size = 'tiny',
           out = 'working_paper/tables/debt_regressions.tex')
 
 
 stargazer(m2_1, m2_2, m2_3, omit = 'as.factor*', 
+          omit.stat = 'f', # so that it fits on the page
           out.header = F,
           title = 'Linear Regression Estimation of Deficit Revisions',
           dep.var.labels = 'Cumulative Deficit Revisions',
@@ -117,13 +125,25 @@ stargazer(m2_1, m2_2, m2_3, omit = 'as.factor*',
 
 
 ## Plot marginal effect -------
-finstress_elect_me <- plot_me(m1_3, term1 = 'yrcurnt_corrected', 
+# Election timing and finstress
+finstress_elect_me <- plot_me(m1_4, term1 = 'yrcurnt_corrected', 
                               term2 = 'finstress_mean',
         fitted2 = seq(0.2, 0.75, by = 0.05)) +
     xlab('\nAnnual FinStress Mean') + 
     ylab('Marginal Effect of Election Timing\n')
 
-ggsave(finstress_elect_me, filename = 'working_paper/figures/finstress_elect_me.pdf')
+ggsave(finstress_elect_me, 
+       filename = 'working_paper/figures/finstress_elect_me.pdf')
+
+# Election timing and required elections
+finstress_required_elect_me <- plot_me(m1_5, term1 = 'endog_electionHW', 
+                              term2 = 'finstress_mean',
+                              fitted2 = seq(0.2, 0.75, by = 0.05)) +
+    xlab('\nAnnual FinStress Mean') + 
+    ylab('Margingal Effect of Required Election\n')
+
+ggsave(finstress_required_elect_me, 
+       filename = 'working_paper/figures/finstress_required_elect_me.pdf')
 
 ## Simulate and plot predicted effects ------
 
