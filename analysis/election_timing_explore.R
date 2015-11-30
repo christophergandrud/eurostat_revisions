@@ -270,9 +270,9 @@ country_predictions_timing <- ggplot(predictions, aes(endog_electionHW, fit,
     geom_ribbon(data = predictions, aes(ymin = lwr, ymax = upr, 
                 fill = finstress_level), alpha = 0.4, colour = NA) +
     scale_color_manual(values = c('#e34a33', '#7fcdbb'), 
-                       name = 'Credit Provision\nStress') +
+                       name = 'Credit\nProvision\nStress') +
     scale_fill_manual(values = c('#e34a33', '#7fcdbb'), 
-                       name = 'Credit Provision\nStress') +
+                       name = 'Credit\nProvision\nStress') +
     scale_y_continuous(breaks = c(-2.5, 0, 3.5, 7.5)) +
     xlab('\n') +
     ylab('Predicted Cumulative Debt Revision\nAfter 3 Years (% GDP)\n') +

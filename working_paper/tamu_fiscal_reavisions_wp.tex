@@ -38,11 +38,12 @@ Mark Hallerberg \\ \emph{Hertie School of Governance}}
 \maketitle
 
 \begin{center}
-    \textbf{Very Early Working Draft for\\ Texas A \& M University: Fiscal Policy in Europe Workshop (11 December 2015)}
+    \textbf{Very Early Working Draft for\\ Texas A \& M University: Fiscal Policy in Europe Workshop (11 December 2015) \\
+    Comments and suggestions very welcome.}
 \end{center}
 
 \begin{abstract}
-    Elected governments have incentives to stretch accounting rules to classify loss-making and/or indebted endeavors, such as public industries and pension schemes, as off of the public balance sheet. Doing so improves the appearance of the government to cost-conscious voters as fiscally restrained in the near-term. We expect rule stretching to be especially prevalent during financial crises given their typical expense and the type of policy options available to assist troubled financial institutions, such as bad banks nationalization are often hard to classify as in or outside of the government sector. To test this proposition, we examine revisions that to government debt and deficit figures made by the European statistical agency--Eurostat. These revisions frequently occur because this politically independent agency re-classifies organizations as within the government sector, when a national government had originally classified it as off. We find that debt figures are more likely to be revised upward for years close to national elections. This effect is strengthened further by financial market stress.
+    Elected governments have incentives to stretch accounting rules by classifying loss-making and/or indebted endeavors, such as public industries and pension schemes, as off of the public balance sheet. Doing so improves the appearance of the incumbent government to cost-conscious voters. We expect rule stretching to be especially prevalent during periods of financial market stress and crises given the typically high expense of responding to these events. In addition, types of policy options available to assist troubled financial institutions, such as bad banks and bank nationalizations, are often hard to classify as being inside or outside of the government sector, thus making it more likely that governments will tend to stretch how they are classified. To test these proposition, we examine revisions to government debt and deficit figures made by the European statistical agency--Eurostat. These revisions frequently occur because this politically independent agency re-classifies organizations as being within the government sector, when a national government had originally classified them as outside. We find that debt figures are more likely to be revised upwards for years close to national elections, especially when these are required non-endogenous elections. These effects are strengthened further by financial market stress. Our research underlines the importance of having a vigilant and politically independent government statistical agency during periods of financial market stress to ensure reliable government finance statistics.
 \end{abstract}
 
 \section{Introduction}
@@ -95,7 +96,9 @@ As Eurostat has more time to examine member state government policies, e.g. how 
 
 Tables \ref{debt_results} and \ref{deficit_results} showing results from linear regressions with cumulative debt and deficit revisions, respectively, as the dependent variable. All models include country fixed effects.
 
-We can see in Table \ref{deficit_results} that election timing is estimated to have a negative effect on debt revisions in models where it is not interacted with FinStress. As the election timing variable is larger, the further away the next election is, this means that government debt figures for years closer to elections tend to be revised more. This finding is similar in direction and magnitude to what \cite{DeCastro2013} found with similar data over a shorter time-span.
+We can see in Table \ref{debt_results} that election timing is estimated to have a negative effect on debt revisions in models where it is not interacted with FinStress. As the election timing variable is larger, i.e. the further away the next election, government debt figures tend to be revised less. Or stated another way, debt revisions are larger for years closer to elections. This finding is similar in direction and magnitude to what \cite{DeCastro2013} found with similar data over a shorter time-span. A new finding can be seen in model 2 of Table \ref{debt_results}. Debt revisions are larger in years where a government was required to hold an election compared to other years. We can see that, in line with our third hypothesis, these two effects increase for years that also have higher credit market stress as measured by the FinStress variable.
+
+Figures \ref{me_finstress_elect} and \ref{me_finstress_required_elect} show marginal effects of the election variables at various levels of credit market stress. At high levels of FinStress, e.g. above 0.55, the marginal effect of being one more year removed from an election on debt revisions is
 
 \begin{figure}
     \caption{Marginal Effect of Election Timing (years to election) at Various Levels of Financial Market Stress on Debt Revisions}
@@ -128,7 +131,10 @@ We can see in Table \ref{deficit_results} that election timing is estimated to h
     	\includegraphics[scale=0.7]{figures/country_predict_required.pdf}
     \end{center}
 
-	{\scriptsize{High and Low stress values refer to country minimum and maximum FinStress scores in the sample.}}
+	{\scriptsize{High and Low stress values refer to country minimum and maximum FinStress scores in the sample.\\
+    Croatia excluded due to a small number of revision years.\\
+    Shaded areas show 95\% confidence intervals.
+}}
 
 \end{figure}
 
