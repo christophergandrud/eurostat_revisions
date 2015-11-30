@@ -10,6 +10,7 @@ library(countrycode)
 library(ggplot2)
 library(devtools)
 library(stargazer)
+library(DataCombine)
 
 # Set working directory. Change as needed
 setwd('/git_repositories/eurostat_revisions/')
@@ -20,8 +21,22 @@ devtools::source_gist('d270ff55c2ca26286e90')
 # Load revisions data
 revisions <- import('data_cleaning/comb_cumulative.csv')
 
+revisions$country <- countrycode(revisions$country, 
+                                      origin = 'country.name',
+                                      destination = 'country.name')
+
 # Load election timing data
 timing <- import('https://raw.githubusercontent.com/christophergandrud/yrcurnt_corrected/master/data/yrcurnt_original_corrected.csv') %>% select(-yrcurnt)
+
+# Creat election year dummy
+timing$elect_dummy <- 0
+timing$elect_dummy[timing$yrcurnt_corrected == 0] <- 1
+
+timing$country <- countrycode(timing$iso2c, 
+                              origin = 'iso2c', 
+                              destination = 'country.name')
+
+timing <- timing %>% select(-iso2c)
 
 # Load FinStress and create annual averages
 FinStress <- rio::import("http://bit.ly/1LFEnhM")
@@ -47,12 +62,18 @@ endog_election <- import('data_cleaning/raw/endogenous_elections.csv') %>%
 
 endog_election <- endog_election[!duplicated(endog_election[, 1:2]), ]
 
-endog_election <- endog_election %>% iso_oecd
+endog_election$country <- countrycode(endog_election$country, 
+                                      origin = 'country.name',
+                                      destination = 'country.name')
+
+FindDups(endog_election, c('country', 'year'))
 
 ## Combine ------
 comb <- merge(timing, revisions, by = c('country', 'year'))
 comb <- merge(comb, finstress_yr_mean, by = c('country', 'year'))
 comb <- merge(comb, endog_election, by = c('country', 'year'), all.x = T)
+
+comb <- comb %>% arrange(country, year, version)
 
 ## Saved merged data ------
 export(comb, 'data_cleaning/main_merged.csv')
@@ -62,6 +83,7 @@ comb <- import('data_cleaning/main_merged.csv') # For working offline
 ## Estimate models -------
 # debt revisions
 debt <- comb %>% filter(component == 'debt')
+FindDups(debt, c('country', 'year', 'version'))
 
 m1_1 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
              as.factor(country), data = debt)
@@ -78,10 +100,6 @@ m1_4 <- lm(cum_revision ~ years_since_original +
                yrcurnt_corrected * finstress_mean +
                as.factor(country), data = debt)
 
-# Creat election year dummy
-debt$elect_dummy <- 0
-debt$elect_dummy[debt$yrcurnt_corrected == 0] <- 1
-
 m1_5 <- lm(cum_revision ~ years_since_original + 
                endog_electionHW*finstress_mean +
                as.factor(country), data = debt)
@@ -89,14 +107,22 @@ m1_5 <- lm(cum_revision ~ years_since_original +
 # deficit revisions
 deficit <- comb %>% filter(component == 'deficit')
 m2_1 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
-         as.factor(country), data = deficit)
-
-m2_2 <- lm(cum_revision ~ years_since_original +
-               yrcurnt_corrected + finstress_mean +
                as.factor(country), data = deficit)
 
-m2_3 <- lm(cum_revision ~ years_since_original +
-               yrcurnt_corrected*finstress_mean +
+m2_2 <- lm(cum_revision ~ years_since_original + 
+               endog_electionHW +
+               as.factor(country), data = deficit)
+
+m2_3 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected + 
+               finstress_mean +
+               as.factor(country), data = deficit)
+
+m2_4 <- lm(cum_revision ~ years_since_original + 
+               yrcurnt_corrected * finstress_mean +
+               as.factor(country), data = deficit)
+
+m2_5 <- lm(cum_revision ~ years_since_original + 
+               endog_electionHW*finstress_mean +
                as.factor(country), data = deficit)
 
 ## Create results tables -------
@@ -117,7 +143,7 @@ stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, omit = 'as.factor*',
           out = 'working_paper/tables/debt_regressions.tex')
 
 
-stargazer(m2_1, m2_2, m2_3, omit = 'as.factor*', 
+stargazer(m2_1, m2_2, m2_3, m2_4, m2_5, omit = 'as.factor*', 
           omit.stat = 'f', # so that it fits on the page
           out.header = F,
           title = 'Linear Regression Estimation of Deficit Revisions',
@@ -125,7 +151,7 @@ stargazer(m2_1, m2_2, m2_3, omit = 'as.factor*',
           covariate.labels = vars,
           label = 'deficit_results',
           add.lines = list(c('Country FE?', 'Yes', 'Yes', 'Yes')),
-          font.size = 'footnotesize',
+          font.size = 'tiny',
           out = 'working_paper/tables/deficit_regressions.tex')
 
 
@@ -230,7 +256,8 @@ predictions <- cbind(predictions, fitted[, c('country', 'finstress_level',
 
 predictions$endog_electionHW <- factor(predictions$endog_electionHW, 
                                           levels = 0:1, 
-                                          labels = c('Other yrs.', 'Non-endog. Elect.'))
+                                          labels = c('Other yrs.', 
+                                                     'Required Elect.'))
 
 country_predictions_timing <- ggplot(predictions, aes(endog_electionHW, fit, 
                                                      group = finstress_level,

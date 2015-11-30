@@ -1,41 +1,47 @@
 
 % Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Mon, Nov 30, 2015 - 11:34:17
+% Date and time: Mon, Nov 30, 2015 - 14:15:36
 \begin{table}[!htbp] \centering 
   \caption{Linear Regression Estimation of Deficit Revisions} 
   \label{deficit_results} 
-\footnotesize 
-\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\tiny 
+\begin{tabular}{@{\extracolsep{5pt}}lccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
- & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-4} 
-\\[-1.8ex] & \multicolumn{3}{c}{Cumulative Deficit Revisions} \\ 
-\\[-1.8ex] & (1) & (2) & (3)\\ 
+ & \multicolumn{5}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-6} 
+\\[-1.8ex] & \multicolumn{5}{c}{Cumulative Deficit Revisions} \\ 
+\\[-1.8ex] & (1) & (2) & (3) & (4) & (5)\\ 
 \hline \\[-1.8ex] 
- Yrs. Since Original & $-$0.058$^{***}$ & $-$0.057$^{***}$ & $-$0.057$^{***}$ \\ 
-  & (0.017) & (0.017) & (0.017) \\ 
-  & & & \\ 
- Yrs. to Election & 0.035$^{**}$ & 0.035$^{**}$ & 0.042 \\ 
-  & (0.013) & (0.014) & (0.061) \\ 
-  & & & \\ 
- Required Election &  & 0.020 & 0.043 \\ 
-  &  & (0.162) & (0.249) \\ 
-  & & & \\ 
- FinStress &  &  & $-$0.015 \\ 
-  &  &  & (0.125) \\ 
-  & & & \\ 
- Yrs. to Elect. * FinStress & $-$0.246$^{**}$ & $-$0.256$^{**}$ & $-$0.266$^{*}$ \\ 
-  & (0.099) & (0.130) & (0.152) \\ 
-  & & & \\ 
+ Yrs. Since Original & $-$0.058$^{***}$ & $-$0.042$^{***}$ & $-$0.057$^{***}$ & $-$0.057$^{***}$ & $-$0.040$^{***}$ \\ 
+  & (0.017) & (0.015) & (0.017) & (0.017) & (0.015) \\ 
+  & & & & & \\ 
+ Yrs. to Election & 0.035$^{**}$ &  & 0.035$^{**}$ & 0.042 &  \\ 
+  & (0.013) &  & (0.014) & (0.061) &  \\ 
+  & & & & & \\ 
+ Required Election &  & $-$0.042 &  &  & 0.155 \\ 
+  &  & (0.071) &  &  & (0.306) \\ 
+  & & & & & \\ 
+ FinStress &  &  & 0.020 & 0.043 & 0.298$^{**}$ \\ 
+  &  &  & (0.162) & (0.249) & (0.150) \\ 
+  & & & & & \\ 
+ Yrs. to Elect. * FinStress &  &  &  & $-$0.015 &  \\ 
+  &  &  &  & (0.125) &  \\ 
+  & & & & & \\ 
+ Required Elect. * FinStress &  &  &  &  & $-$0.402 \\ 
+  &  &  &  &  & (0.635) \\ 
+  & & & & & \\ 
+ Constant & $-$0.246$^{**}$ & $-$0.235$^{***}$ & $-$0.256$^{**}$ & $-$0.266$^{*}$ & $-$0.394$^{***}$ \\ 
+  & (0.099) & (0.084) & (0.130) & (0.152) & (0.115) \\ 
+  & & & & & \\ 
 \hline \\[-1.8ex] 
-Country FE? & Yes & Yes & Yes \\ 
-Observations & 1,430 & 1,430 & 1,430 \\ 
-R$^{2}$ & 0.217 & 0.217 & 0.217 \\ 
-Adjusted R$^{2}$ & 0.201 & 0.200 & 0.200 \\ 
-Residual Std. Error & 0.645 (df = 1400) & 0.645 (df = 1399) & 0.645 (df = 1398) \\ 
+Country FE? & Yes & Yes & Yes &  &  \\ 
+Observations & 1,430 & 1,263 & 1,430 & 1,430 & 1,263 \\ 
+R$^{2}$ & 0.217 & 0.289 & 0.217 & 0.217 & 0.292 \\ 
+Adjusted R$^{2}$ & 0.201 & 0.273 & 0.200 & 0.200 & 0.274 \\ 
+Residual Std. Error & 0.645 (df = 1400) & 0.535 (df = 1234) & 0.645 (df = 1399) & 0.645 (df = 1398) & 0.534 (df = 1232) \\ 
 \hline 
 \hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\textit{Note:}  & \multicolumn{5}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 \end{tabular} 
 \end{table} 
