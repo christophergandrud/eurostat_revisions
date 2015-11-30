@@ -53,7 +53,12 @@ endog_election <- endog_election %>% iso_oecd
 comb <- merge(timing, revisions, by = c('country', 'year'))
 comb <- merge(comb, finstress_yr_mean, by = c('country', 'year'))
 comb <- merge(comb, endog_election, by = c('country', 'year'), all.x = T)
-    
+
+## Saved merged data ------
+export(comb, 'data_cleaning/main_merged.csv')
+
+
+comb <- import('data_cleaning/main_merged.csv') # For working offline    
 ## Estimate models -------
 # debt revisions
 debt <- comb %>% filter(component == 'debt')
@@ -145,9 +150,9 @@ finstress_required_elect_me <- plot_me(m1_5, term1 = 'endog_electionHW',
 ggsave(finstress_required_elect_me, 
        filename = 'working_paper/figures/finstress_required_elect_me.pdf')
 
-## Simulate and plot predicted effects ------
+## Simulate and plot predicted effects ------------------
 
-# Scenarios
+# Scenarios for election timing ----
 
 countries <- unique(debt$country)
 
@@ -174,13 +179,14 @@ for (i in (countries)) {
 temp_levels <- c(rep('low', 4), rep('high', 4))
 fitted$finstress_level <- rep(temp_levels, length(countries))
 
-predictions <- predict(m1_3, newdata = fitted, interval = 'confidence')
+predictions <- predict(m1_4, newdata = fitted, interval = 'confidence')
 predictions <- cbind(predictions, fitted[, c('country', 'finstress_level',
                                              "yrcurnt_corrected")])
 
-country_predictions <-ggplot(predictions, aes(yrcurnt_corrected, fit, 
+country_predictions_timing <-ggplot(predictions, aes(yrcurnt_corrected, fit, 
                                         group = finstress_level,
-                            colour = finstress_level, fill = finstress_level)) +
+                                        colour = finstress_level, 
+                                        fill = finstress_level)) +
     geom_hline(yintercept = 0, linetype = 'dotted') +
     facet_wrap(~country) +
     geom_line() +
@@ -193,4 +199,58 @@ country_predictions <-ggplot(predictions, aes(yrcurnt_corrected, fit,
     ylab('Predicted Cumulative Debt Revision\nAfter 3 Years (% GDP)\n') +
     theme_bw()
 
-ggsave(country_predictions, filename = 'working_paper/figures/country_predict.pdf')
+ggsave(country_predictions_timing, 
+       filename = 'working_paper/figures/country_predict_timing.pdf')
+
+# Scenarios for election non-endogenous elections ----
+
+fitted <- NULL
+
+for (i in (countries)) {
+    temp <- debt %>% filter(country == i)
+    min_finstress <- min(temp$finstress_mean, na.rm = T)
+    max_finstress <- max(temp$finstress_mean, na.rm = T)
+    
+    temp_fitted <- data.frame(years_since_original = rep(3, 4),
+                              endog_electionHW = rep(0:1, 2),
+                              finstress_mean = c(rep(min_finstress, 2), 
+                                                 rep(max_finstress, 2)),
+                              country = rep(i, 4)
+    )
+    fitted <- rbind(fitted, temp_fitted)
+    rm(temp, temp_fitted)
+}
+
+temp_levels <- c(rep('low', 2), rep('high', 2))
+fitted$finstress_level <- rep(temp_levels, length(countries))
+
+predictions <- predict(m1_5, newdata = fitted, interval = 'confidence')
+predictions <- cbind(predictions, fitted[, c('country', 'finstress_level',
+                                             "endog_electionHW")])
+
+predictions$endog_electionHW <- factor(predictions$endog_electionHW, 
+                                          levels = 0:1, 
+                                          labels = c('Other yrs.', 'Non-endog. Elect.'))
+
+country_predictions_timing <- ggplot(predictions, aes(endog_electionHW, fit, 
+                                                     group = finstress_level,
+                                                     colour = finstress_level, 
+                                                     fill = finstress_level)) +
+    geom_hline(yintercept = 0, linetype = 'dotted') +
+    facet_wrap(~country, ncol =  7) +
+    geom_line() +
+    geom_point() +
+    geom_ribbon(data = predictions, aes(ymin = lwr, ymax = upr, 
+                fill = finstress_level), alpha = 0.4, colour = NA) +
+    scale_color_manual(values = c('#e34a33', '#7fcdbb'), 
+                       name = 'Credit Provision\nStress') +
+    scale_fill_manual(values = c('#e34a33', '#7fcdbb'), 
+                       name = 'Credit Provision\nStress') +
+    scale_y_continuous(breaks = c(-2.5, 0, 3.5, 7.5)) +
+    xlab('\n') +
+    ylab('Predicted Cumulative Debt Revision\nAfter 3 Years (% GDP)\n') +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggsave(country_predictions_timing, 
+       filename = 'working_paper/figures/country_predict_required.pdf')
