@@ -66,6 +66,11 @@ endog_election$country <- countrycode(endog_election$country,
                                       origin = 'country.name',
                                       destination = 'country.name')
 
+endog_election$endog_3[endog_election$endog_electionHW == 1] <- 1 
+endog_election$endog_3[endog_election$endog_predHW == 1] <- 2
+endog_election$endog_3[endog_election$endog_predHW == 0 & 
+                           endog_election$endog_electionHW == 0] <- 3
+
 FindDups(endog_election, c('country', 'year'))
 
 ## Combine ------
@@ -79,7 +84,14 @@ comb <- comb %>% arrange(country, year, version)
 export(comb, 'data_cleaning/main_merged.csv')
 
 
-comb <- import('data_cleaning/main_merged.csv') # For working offline    
+comb <- import('data_cleaning/main_merged.csv') # For working offline   
+
+comb$endog_3 <- factor(comb$endog_3, 
+                       levels = c(1:3),
+                       labels = c('Endogenous', 'Non-endogenous', 'No election'))
+
+comb$endog_3 <- relevel(comb$endog_3, ref = 'No election')
+
 ## Estimate models -------
 # debt revisions
 debt <- comb %>% filter(component == 'debt')
@@ -89,19 +101,23 @@ m1_1 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
              as.factor(country), data = debt)
 
 m1_2 <- lm(cum_revision ~ years_since_original + 
-               endog_electionHW +
+               endog_3 +
                as.factor(country), data = debt)
 
 m1_3 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected + 
                finstress_mean +
                as.factor(country), data = debt)
 
-m1_4 <- lm(cum_revision ~ years_since_original + 
-               yrcurnt_corrected * finstress_mean +
+m1_4 <- lm(cum_revision ~ years_since_original + endog_3 + 
+               finstress_mean +
                as.factor(country), data = debt)
 
 m1_5 <- lm(cum_revision ~ years_since_original + 
-               endog_electionHW*finstress_mean +
+               yrcurnt_corrected * finstress_mean +
+               as.factor(country), data = debt)
+
+m1_6 <- lm(cum_revision ~ years_since_original + 
+               endog_3*finstress_mean +
                as.factor(country), data = debt)
 
 # deficit revisions
@@ -110,29 +126,34 @@ m2_1 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
                as.factor(country), data = deficit)
 
 m2_2 <- lm(cum_revision ~ years_since_original + 
-               endog_electionHW +
+               endog_3 +
                as.factor(country), data = deficit)
 
 m2_3 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected + 
                finstress_mean +
                as.factor(country), data = deficit)
 
-m2_4 <- lm(cum_revision ~ years_since_original + 
-               yrcurnt_corrected * finstress_mean +
+m2_4 <- lm(cum_revision ~ years_since_original + endog_3 + 
+               finstress_mean +
                as.factor(country), data = deficit)
 
 m2_5 <- lm(cum_revision ~ years_since_original + 
-               endog_electionHW*finstress_mean +
+               yrcurnt_corrected * finstress_mean +
+               as.factor(country), data = deficit)
+
+m2_6 <- lm(cum_revision ~ years_since_original + 
+               endog_3*finstress_mean +
                as.factor(country), data = deficit)
 
 ## Create results tables -------
-vars <- c('Yrs. Since Original', 'Yrs. to Election', 'Required Election',
-          'FinStress', 'Yrs. to Elect. * FinStress', 
-          'Required Elect. * FinStress')
+vars <- c('Yrs. Since Original', 'Yrs. to Election', 'Endog. Election',
+          'Non-Endog. Election',
+          'FinStress', 'Yrs. to Elect.*FinStress', 
+          'Endog. Elect.*FinStress', 'Non-Endog. Elect.*FinStress')
 
 
-stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, omit = 'as.factor*', 
-          omit.stat = 'f', # so that it fits on the page
+stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, omit = 'as.factor*', 
+          omit.stat = c('f', 'ser'), # so that it fits on the page
           out.header = F,
           title = 'Linear Regression Estimation of Debt Revisions',
           dep.var.labels = 'Cumulative Debt Revisions',
@@ -143,8 +164,8 @@ stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, omit = 'as.factor*',
           out = 'working_paper/tables/debt_regressions.tex')
 
 
-stargazer(m2_1, m2_2, m2_3, m2_4, m2_5, omit = 'as.factor*', 
-          omit.stat = 'f', # so that it fits on the page
+stargazer(m2_1, m2_2, m2_3, m2_4, m2_5, m2_6, omit = 'as.factor*', 
+          omit.stat = c('f', 'ser'), # so that it fits on the page
           out.header = F,
           title = 'Linear Regression Estimation of Deficit Revisions',
           dep.var.labels = 'Cumulative Deficit Revisions',
@@ -157,7 +178,7 @@ stargazer(m2_1, m2_2, m2_3, m2_4, m2_5, omit = 'as.factor*',
 
 ## Plot marginal effect -------
 # Election timing and finstress
-finstress_elect_me <- plot_me(m1_4, term1 = 'yrcurnt_corrected', 
+finstress_elect_me <- plot_me(m1_5, term1 = 'yrcurnt_corrected', 
                               term2 = 'finstress_mean',
         fitted2 = seq(0.2, 0.75, by = 0.05)) +
     xlab('\nAnnual FinStress Mean') + 
@@ -166,15 +187,15 @@ finstress_elect_me <- plot_me(m1_4, term1 = 'yrcurnt_corrected',
 ggsave(finstress_elect_me, 
        filename = 'working_paper/figures/finstress_elect_me.pdf')
 
-# Election timing and required elections
-finstress_required_elect_me <- plot_me(m1_5, term1 = 'endog_electionHW', 
+# Election timing and endogenous elections
+finstress_endog_elect_me <- plot_me(m1_6, term1 = 'endog_3Endogenous', 
                               term2 = 'finstress_mean',
                               fitted2 = seq(0.2, 0.75, by = 0.05)) +
     xlab('\nAnnual FinStress Mean') + 
-    ylab('Margingal Effect of Required Election\n')
+    ylab('Margingal Effect of an Endogenous Election\n')
 
-ggsave(finstress_required_elect_me, 
-       filename = 'working_paper/figures/finstress_required_elect_me.pdf')
+ggsave(finstress_endog_elect_me, 
+       filename = 'working_paper/figures/finstress_endog_elect_me.pdf')
 
 ## Simulate and plot predicted effects ------------------
 
@@ -205,11 +226,11 @@ for (i in (countries)) {
 temp_levels <- c(rep('low', 4), rep('high', 4))
 fitted$finstress_level <- rep(temp_levels, length(countries))
 
-predictions <- predict(m1_4, newdata = fitted, interval = 'confidence')
+predictions <- predict(m1_5, newdata = fitted, interval = 'confidence')
 predictions <- cbind(predictions, fitted[, c('country', 'finstress_level',
                                              "yrcurnt_corrected")])
 
-country_predictions_timing <-ggplot(predictions, aes(yrcurnt_corrected, fit, 
+country_predictions_timing <- ggplot(predictions, aes(yrcurnt_corrected, fit, 
                                         group = finstress_level,
                                         colour = finstress_level, 
                                         fill = finstress_level)) +
@@ -228,7 +249,7 @@ country_predictions_timing <-ggplot(predictions, aes(yrcurnt_corrected, fit,
 ggsave(country_predictions_timing, 
        filename = 'working_paper/figures/country_predict_timing.pdf')
 
-# Scenarios for election non-endogenous elections ----
+# Scenarios for election endogenous elections ----
 
 fitted <- NULL
 
@@ -237,29 +258,30 @@ for (i in (countries)) {
     min_finstress <- min(temp$finstress_mean, na.rm = T)
     max_finstress <- max(temp$finstress_mean, na.rm = T)
     
-    temp_fitted <- data.frame(years_since_original = rep(3, 4),
-                              endog_electionHW = rep(0:1, 2),
-                              finstress_mean = c(rep(min_finstress, 2), 
-                                                 rep(max_finstress, 2)),
-                              country = rep(i, 4)
+    temp_fitted <- data.frame(years_since_original = rep(3, 6),
+                              endog_3 = as.factor(rep(c('No election',
+                                                        'Endogenous',
+                                                        'Non-endogenous'), 2)),
+                              finstress_mean = c(rep(min_finstress, 3), 
+                                                 rep(max_finstress, 3)),
+                              country = rep(i, 6)
     )
     fitted <- rbind(fitted, temp_fitted)
     rm(temp, temp_fitted)
 }
 
-temp_levels <- c(rep('low', 2), rep('high', 2))
+temp_levels <- c(rep('low', 3), rep('high', 3))
 fitted$finstress_level <- rep(temp_levels, length(countries))
 
-predictions <- predict(m1_5, newdata = fitted, interval = 'confidence')
+predictions <- predict(m1_6, newdata = fitted, interval = 'confidence')
 predictions <- cbind(predictions, fitted[, c('country', 'finstress_level',
-                                             "endog_electionHW")])
+                                             'endog_3')])
 
-predictions$endog_electionHW <- factor(predictions$endog_electionHW, 
-                                          levels = 0:1, 
-                                          labels = c('Other yrs.', 
-                                                     'Required Elect.'))
+predictions$endog_3 <- factor(predictions$endog_3, 
+                              levels = c('No election', 'Non-endogenous', 
+                                         'Endogenous'))
 
-country_predictions_timing <- ggplot(predictions, aes(endog_electionHW, fit, 
+country_predictions_timing <- ggplot(predictions, aes(endog_3, fit, 
                                                      group = finstress_level,
                                                      colour = finstress_level, 
                                                      fill = finstress_level)) +

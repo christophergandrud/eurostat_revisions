@@ -59,7 +59,7 @@ Mark Hallerberg \\ \emph{Hertie School of Governance}}
 \section{Hypotheses}
 
 \begin{quote}
-    $H_{1}$: Debt revisions will be greater for years closer to national government elections.
+    $H_{1}$: Debt revisions will be smaller for years further from national government elections.
 \end{quote}
 
 \begin{quote}
@@ -98,7 +98,7 @@ Tables \ref{debt_results} and \ref{deficit_results} showing results from linear 
 
 We can see in Table \ref{debt_results} that election timing is estimated to have a negative effect on debt revisions in models where it is not interacted with FinStress. As the election timing variable is larger, i.e. the further away the next election, government debt figures tend to be revised less. Or stated another way, debt revisions are larger for years closer to elections. This finding is similar in direction and magnitude to what \cite{DeCastro2013} found with similar data over a shorter time-span. A new finding can be seen in model 2 of Table \ref{debt_results}. Debt revisions are larger in years where a government was required to hold an election compared to other years. We can see that, in line with our third hypothesis, these two effects increase for years that also have higher credit market stress as measured by the FinStress variable.
 
-Figures \ref{me_finstress_elect} and \ref{me_finstress_required_elect} show marginal effects of the election variables at various levels of credit market stress. At high levels of FinStress, e.g. above 0.55, the marginal effect of being one more year removed from an election on debt revisions is
+Figures \ref{me_finstress_elect} and \ref{me_finstress_endog_elect} show marginal effects of the election variables at various levels of credit market stress. At high levels of FinStress, e.g. above 0.55, the marginal effect of being one more year removed from an election on debt revisions is
 
 \begin{figure}
     \caption{Marginal Effect of Election Timing (years to election) at Various Levels of Financial Market Stress on Debt Revisions}
@@ -113,11 +113,11 @@ Figures \ref{me_finstress_elect} and \ref{me_finstress_required_elect} show marg
 \end{figure}
 
 \begin{figure}
-    \caption{Marginal Effect of Non-Endogenous Elections at Various Levels of Financial Market Stress on Debt Revisions}
-    \label{me_finstress_required_elect}
+    \caption{Marginal Effect of an Endogenous Election at Various Levels of Financial Market Stress on Debt Revisions}
+    \label{me_finstress_endog_elect}
 
     \begin{center}
-        \includegraphics[scale=0.4]{figures/finstress_required_elect_me.pdf}
+        \includegraphics[scale=0.4]{figures/finstress_endog_elect_me.pdf}
     \end{center}
 
 	{\scriptsize{Shaded area represents 95\% confidence interval.}}
@@ -125,7 +125,7 @@ Figures \ref{me_finstress_elect} and \ref{me_finstress_required_elect} show marg
 \end{figure}
 
 \begin{figure}
-	\caption{Predicted Debt Revisions in Three Years After Publication for Years with Non-Endogenous Elections vs. All Other Years}
+	\caption{Predicted Debt Revisions in Three Years After Publication for Years with Different Election Types/Non-election Years}
     \label{country_predict_debt_required}
     \begin{center}
     	\includegraphics[scale=0.7]{figures/country_predict_required.pdf}
