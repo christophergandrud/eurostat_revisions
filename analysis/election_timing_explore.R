@@ -11,6 +11,7 @@ library(ggplot2)
 library(devtools)
 library(stargazer)
 library(DataCombine)
+library(stringr)
 
 # Set working directory. Change as needed
 setwd('/git_repositories/eurostat_revisions/')
@@ -39,7 +40,7 @@ timing$country <- countrycode(timing$iso2c,
 timing <- timing %>% select(-iso2c)
 
 # Load FinStress and create annual averages
-FinStress <- rio::import("http://bit.ly/1LFEnhM")
+FinStress <- rio::import("https://raw.githubusercontent.com/christophergandrud/EIUCrisesMeasure/master/data/results_kpca_rescaled.csv")
 
 # Annual data --------
 FinStress$year <- year(FinStress$date)
@@ -72,6 +73,20 @@ endog_election$endog_3[endog_election$endog_predHW == 0 &
                            endog_election$endog_electionHW == 0] <- 3
 
 FindDups(endog_election, c('country', 'year'))
+
+## Eurostat EDP deficit and debt figures (downloaded 2 Dec. 2015)
+# http://ec.europa.eu/eurostat/data/database
+# na_item
+# TE -- Total Expenditure
+# TR -- Total Revenue
+# B1GQ -- GDP current prices
+# GD -- debt
+
+debt_deficit <- import('data_cleaning/raw/gov_10dd_edpt1.tsv', header = T,
+                       na.strings = ":")
+
+split <- str_split_fixed(debt_deficit[, 1], pattern = ',', n = 4)
+names(split) <- 
 
 ## Combine ------
 comb <- merge(timing, revisions, by = c('country', 'year'))
@@ -297,7 +312,7 @@ country_predictions_timing <- ggplot(predictions, aes(endog_3, fit,
                        name = 'Credit\nProvision\nStress') +
     scale_y_continuous(breaks = c(-2.5, 0, 3.5, 7.5)) +
     xlab('\n') +
-    ylab('Predicted Cumulative Debt Revision\nAfter 3 Years (% GDP)\n') +
+    ylab('Predicted Cumulative Debt Revision\nAfter 4 Years (% GDP)\n') +
     theme_bw() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
