@@ -125,7 +125,7 @@ comb <- comb %>% arrange(country, year, version)
 ## Saved merged data ------
 export(comb, 'data_cleaning/main_merged.csv')
 
-
+# Import
 comb <- import('data_cleaning/main_merged.csv') # For working offline   
 
 comb$endog_3 <- factor(comb$endog_3, 
@@ -139,88 +139,111 @@ comb$endog_3 <- relevel(comb$endog_3, ref = 'No election')
 debt <- comb %>% filter(component == 'debt')
 FindDups(debt, c('country', 'year', 'version'))
 
-m1_1 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
+m1_1 <- lm(cum_revision ~ years_since_original + central_gov_debt +
              as.factor(country), data = debt)
 
-m1_2 <- lm(cum_revision ~ years_since_original + 
+m1_2 <- lm(cum_revision ~ years_since_original + general_gov_deficit +
+               as.factor(country), data = debt)
+
+m1_3 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
+               as.factor(country), data = debt)
+
+m1_4 <- lm(cum_revision ~ years_since_original + 
                endog_3 +
                as.factor(country), data = debt)
 
-m1_3 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected + 
+m1_5 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected + 
                finstress_mean +
                as.factor(country), data = debt)
 
-m1_4 <- lm(cum_revision ~ years_since_original + endog_3 + 
+m1_6 <- lm(cum_revision ~ years_since_original + endog_3 + 
                finstress_mean +
                as.factor(country), data = debt)
 
-m1_5 <- lm(cum_revision ~ years_since_original + 
+m1_7 <- lm(cum_revision ~ years_since_original + 
                yrcurnt_corrected * finstress_mean +
                as.factor(country), data = debt)
 
-m1_6 <- lm(cum_revision ~ years_since_original + 
+m1_8 <- lm(cum_revision ~ years_since_original +
+               endog_3*finstress_mean +
+               as.factor(country), data = debt)
+
+m1_9 <- lm(cum_revision ~ years_since_original + general_gov_deficit +
                endog_3*finstress_mean +
                as.factor(country), data = debt)
 
 # deficit revisions
 deficit <- comb %>% filter(component == 'deficit')
-m2_1 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
+m2_1 <- lm(cum_revision ~ years_since_original + central_gov_debt +
                as.factor(country), data = deficit)
 
-m2_2 <- lm(cum_revision ~ years_since_original + 
+m2_2 <- lm(cum_revision ~ years_since_original + general_gov_deficit +
+               as.factor(country), data = deficit)
+
+m2_3 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
+               as.factor(country), data = deficit)
+
+m2_4 <- lm(cum_revision ~ years_since_original + 
                endog_3 +
                as.factor(country), data = deficit)
 
-m2_3 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected + 
+m2_5 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected + 
                finstress_mean +
                as.factor(country), data = deficit)
 
-m2_4 <- lm(cum_revision ~ years_since_original + endog_3 + 
+m2_6 <- lm(cum_revision ~ years_since_original + endog_3 + 
                finstress_mean +
                as.factor(country), data = deficit)
 
-m2_5 <- lm(cum_revision ~ years_since_original + 
+m2_7 <- lm(cum_revision ~ years_since_original + 
                yrcurnt_corrected * finstress_mean +
                as.factor(country), data = deficit)
 
-m2_6 <- lm(cum_revision ~ years_since_original + 
+m2_8 <- lm(cum_revision ~ years_since_original + 
+               endog_3*finstress_mean +
+               as.factor(country), data = deficit)
+
+m2_9 <- lm(cum_revision ~ years_since_original + general_gov_deficit +
                endog_3*finstress_mean +
                as.factor(country), data = deficit)
 
 ## Create results tables -------
-vars <- c('Yrs. Since Original', 'Yrs. to Election', 'Endog. Election',
+vars <- c('Yrs. Since Original', 'Cent. Gov. Debt', 'Gen. Gov. Deficit',
+          'Yrs. to Election', 'Endog. Election',
           'Non-Endog. Election',
           'FinStress', 'Yrs. to Elect.*FinStress', 
           'Endog. Elect.*FinStress', 'Non-Endog. Elect.*FinStress')
 
 
-stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, omit = 'as.factor*', 
+stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, 
+          omit = 'as.factor*', 
           omit.stat = c('f', 'ser'), # so that it fits on the page
           out.header = F,
-          title = 'Linear Regression Estimation of Debt Revisions',
+          title = 'Linear Regression Estimation of \\textbf{Debt} Revisions',
           dep.var.labels = 'Cumulative Debt Revisions',
           covariate.labels = vars,
           label = 'debt_results',
-          add.lines = list(c('Country FE?', 'Yes', 'Yes', 'Yes')),
+          add.lines = list(c('Country FE?', rep('Yes', 9))),
           font.size = 'tiny',
           out = 'working_paper/tables/debt_regressions.tex')
 
 
-stargazer(m2_1, m2_2, m2_3, m2_4, m2_5, m2_6, omit = 'as.factor*', 
+stargazer(m2_1, m2_2, m2_3, m2_4, m2_5, m2_6, m2_7, m2_8, m2_9,
+          omit = 'as.factor*', 
           omit.stat = c('f', 'ser'), # so that it fits on the page
           out.header = F,
-          title = 'Linear Regression Estimation of Deficit Revisions',
+          title = 'Linear Regression Estimation of \\textbf{Deficit} Revisions',
           dep.var.labels = 'Cumulative Deficit Revisions',
           covariate.labels = vars,
           label = 'deficit_results',
-          add.lines = list(c('Country FE?', 'Yes', 'Yes', 'Yes')),
+          add.lines = list(c('Country FE?', rep('Yes', 9))),
           font.size = 'tiny',
           out = 'working_paper/tables/deficit_regressions.tex')
 
 
 ## Plot marginal effect -------
 # Election timing and finstress
-finstress_elect_me <- plot_me(m1_5, term1 = 'yrcurnt_corrected', 
+finstress_elect_me <- plot_me(m1_7, term1 = 'yrcurnt_corrected', 
                               term2 = 'finstress_mean',
         fitted2 = seq(0.2, 0.75, by = 0.05)) +
     xlab('\nAnnual FinStress Mean') + 
@@ -230,7 +253,7 @@ ggsave(finstress_elect_me,
        filename = 'working_paper/figures/finstress_elect_me.pdf')
 
 # Election timing and endogenous elections
-finstress_endog_elect_me <- plot_me(m1_6, term1 = 'endog_3Endogenous', 
+finstress_endog_elect_me <- plot_me(m1_8, term1 = 'endog_3Endogenous', 
                               term2 = 'finstress_mean',
                               fitted2 = seq(0.2, 0.75, by = 0.05)) +
     xlab('\nAnnual FinStress Mean') + 
@@ -238,6 +261,16 @@ finstress_endog_elect_me <- plot_me(m1_6, term1 = 'endog_3Endogenous',
 
 ggsave(finstress_endog_elect_me, 
        filename = 'working_paper/figures/finstress_endog_elect_me.pdf')
+
+## ME for Deficit revisions
+finstress_non_endog_deficit_me <- plot_me(m2_8, term1 = 'endog_3Non-endogenous', 
+        term2 = 'finstress_mean',
+        fitted2 = seq(0.2, 0.75, by = 0.05)) +
+    xlab('\nAnnual FinStress Mean') + 
+    ylab('Marginal Effect of a Non-endogenous Election\n')
+
+ggsave(finstress_non_endog_deficit_me, 
+       filename = 'working_paper/figures/finstress_non_endog_deficit_me.pdf')
 
 ## Simulate and plot predicted effects ------------------
 
@@ -268,7 +301,7 @@ for (i in (countries)) {
 temp_levels <- c(rep('low', 4), rep('high', 4))
 fitted$finstress_level <- rep(temp_levels, length(countries))
 
-predictions <- predict(m1_5, newdata = fitted, interval = 'confidence')
+predictions <- predict(m1_7, newdata = fitted, interval = 'confidence')
 predictions <- cbind(predictions, fitted[, c('country', 'finstress_level',
                                              "yrcurnt_corrected")])
 
@@ -315,7 +348,7 @@ for (i in (countries)) {
 temp_levels <- c(rep('low', 3), rep('high', 3))
 fitted$finstress_level <- rep(temp_levels, length(countries))
 
-predictions <- predict(m1_6, newdata = fitted, interval = 'confidence')
+predictions <- predict(m1_8, newdata = fitted, interval = 'confidence')
 predictions <- cbind(predictions, fitted[, c('country', 'finstress_level',
                                              'endog_3')])
 
