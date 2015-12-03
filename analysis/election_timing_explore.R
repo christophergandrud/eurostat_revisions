@@ -12,6 +12,7 @@ library(devtools)
 library(stargazer)
 library(DataCombine)
 library(stringr)
+library(tidyr)
 
 # Set working directory. Change as needed
 setwd('/git_repositories/eurostat_revisions/')
@@ -77,21 +78,98 @@ FindDups(endog_election, c('country', 'year'))
 ## Eurostat EDP deficit and debt figures (downloaded 2 Dec. 2015)
 # http://ec.europa.eu/eurostat/data/database
 # na_item
-# TE -- Total Expenditure
-# TR -- Total Revenue
 # B1GQ -- GDP current prices
-# GD -- debt
+# GD -- Debt
+# S13 -- General government sector
+# S1311 -- Central government
 
-debt_deficit <- import('data_cleaning/raw/gov_10dd_edpt1.tsv', header = T,
+debt_raw <- import('data_cleaning/raw/gov_10dd_edpt1.tsv', header = T,
                        na.strings = ":")
 
-split <- str_split_fixed(debt_deficit[, 1], pattern = ',', n = 4)
-names(split) <- 
+split <- str_split_fixed(debt_raw[, 1], pattern = ',', n = 4) %>% 
+    as.data.frame
+# Keep units as a % of GDP
+names(split) <- c('units', 'sector', 'quantity', 'country_code')
+debt_raw <- cbind(split, debt_raw[, 2:ncol(debt_raw)])
+debt_raw <- debt_raw %>% filter(units == 'MIO_EUR') %>% select(-units)
+
+
+debt_raw <- gather(debt_raw, key = year, value = value, 
+                       4:ncol(debt_raw))
+debt_raw$quantity <- debt_raw$quantity %>% as.character
+debt_raw$sector <- debt_raw$sector %>% as.character
+
+# Split off GDP
+gdp <- debt_raw %>% filter(sector == 'S1' & quantity == 'B1GQ')
+gdp <- gdp %>% select(country_code:value)
+gdp <- gdp %>% rename(gdp_million_euro = value)
+gdp$gdp_million_euro <- as.numeric(gdp$gdp_million_euro)
+for (i in 1:2) gdp[, i] <- as.character(gdp[, i])
+
+# Split off absolute balance and debt for central government (no balance for general)
+debt_raw <- debt_raw %>% filter(sector ==  'S1311' & quantity == 'GD')
+
+debt_raw <- DropNA(debt_raw, 'value')
+
+# Central government
+debt_raw <- spread(debt_raw, key = quantity, value = value)
+
+debt_raw <- debt_raw %>% select(-sector)
+names(debt_raw) <- c('country_code', 'year', 'central_gov_debt_raw')
+
+for (i in 1:2) debt_raw[, i] <- as.character(debt_raw[, i])
+for (i in 2:3) debt_raw[, i] <- as.numeric(debt_raw[, i])
+
+debt_raw <- merge(debt_raw, gdp, by = c('country_code', 'year'))
+
+# Create debt by GDP in millions of Euros
+debt_raw$central_gov_debt <- (debt_raw$central_gov_debt_raw / 
+                                      debt_raw$gdp_million_euro) * 100
+
+debt_raw$country_code[debt_raw$country_code == 'UK'] <- 'GB'
+debt_raw$country <- countrycode(debt_raw$country_code, origin = 'iso2c',
+                                    destination = 'country.name')
+debt_raw <- debt_raw %>% DropNA('country')
+
+debt_raw <- debt_raw %>% select(country, year, central_gov_debt, 
+                                gdp_million_euro) %>%
+                    arrange(country, year)
+
+## Deficit ------
+# Downloaded from: http://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&language=en&pcode=teina200&plugin=1
+# 3 December 2015
+
+deficit_raw <- import('data_cleaning/raw/teina200.tsv', header = T, 
+                      na.strings = ':')
+
+split <- str_split_fixed(deficit_raw[, 1], pattern = ',', n = 2) %>% 
+    as.data.frame
+
+deficit_raw <- cbind(split, deficit_raw[, 2:(ncol(deficit_raw))])
+deficit_raw <- deficit_raw %>% filter(V1 == 'PC_GDP') %>% select(-V1)
+
+deficit_raw <- deficit_raw %>% gather(year, general_gov_deficit, 
+                                      2:ncol(deficit_raw))
+
+for (i in 1:2) deficit_raw[, i] <- as.character(deficit_raw[, i])
+for (i in 2:ncol(deficit_raw)) deficit_raw[, i] <- as.numeric(deficit_raw[, i])
+
+deficit_raw$V2[deficit_raw$V2 == 'UK'] <- 'GB'
+deficit_raw$country <- countrycode(deficit_raw$V2, origin = 'iso2c',
+                                destination = 'country.name')
+deficit_raw <- deficit_raw %>% DropNA('country')
+
+deficit_raw <- deficit_raw %>% select(country, year, general_gov_deficit) %>%
+                arrange(country, year)
+
+deficit_debt <- merge(deficit_raw, debt_raw, by = c('country', 'year'), 
+                      all.x = T)
 
 ## Combine ------
 comb <- merge(timing, revisions, by = c('country', 'year'))
 comb <- merge(comb, finstress_yr_mean, by = c('country', 'year'))
 comb <- merge(comb, endog_election, by = c('country', 'year'), all.x = T)
+comb <- merge(comb, deficit_debt, by = c('country', 'year'), all.x = T)
 
 comb <- comb %>% arrange(country, year, version)
 
