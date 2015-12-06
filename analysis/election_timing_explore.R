@@ -378,3 +378,30 @@ country_predictions_timing <- ggplot(predictions, aes(endog_3, fit,
 
 ggsave(country_predictions_timing, 
        filename = 'working_paper/figures/country_predict_required.pdf')
+
+## Extra ----------------------------------------------------------------------
+
+## Test if selection into election type by FinStress
+library(nnet)
+
+no_dups <- comb %>% FindDups(comb, Vars = c('country', 'year'), NotDups = T)
+
+multi_endog3 <- nnet::multinom(endog_3 ~ finstress_mean, data = no_dups) 
+
+# Find p-value
+z <- summary(multi_endog3)$coefficients/summary(multi_endog3)$standard.errors
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+
+logit_endog <- glm(endog_electionHW ~ finstress_mean + as.factor(country), 
+                   data = no_dups)
+
+stargazer(logit_endog, omit = 'as.factor*',
+          covariate.labels = 'FinStress',
+          out.header = F,
+          title = 'Logistic Regression Estimation of Having an Endogenous Election',
+          dep.var.labels = 'Endogenous Election',
+          label = 'finstress_endog',
+          add.lines = list(c('Country FE?', 'Yes')),
+          out = 'working_paper/tables/finstress_predict_endog.tex'
+          )
