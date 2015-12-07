@@ -77,12 +77,19 @@ endog_election$endog_3[endog_election$endog_predHW == 0 &
 FindDups(endog_election, c('country', 'year'))
 
 ## Debt figures from the World Bank Development Indicators ----
-debt_raw <- WDI(indicator = 'GC.DOD.TOTL.GD.ZS', start = 2000)
+debt_raw <- WDI(indicator = c('GC.DOD.TOTL.GD.ZS', 'PA.NUS.FCRF'), 
+                start = 2000, end = 2015)
+
+debt_raw <- debt_raw %>% select(country, year, GC.DOD.TOTL.GD.ZS, PA.NUS.FCRF) %>%
+    rename(central_gov_debt = GC.DOD.TOTL.GD.ZS) %>%
+    rename(exchange_usd = PA.NUS.FCRF)
+
+# Extract euro exchange rat and place it in for euro countries
+euro_exchange <- debt_raw %>% filter(country == 'Euro area') %>% 
+                    select(year, exchange_usd)
+
 debt_raw$country <- countrycode(debt_raw$country, origin = 'country.name',
                                 destination = 'country.name')
-
-debt_raw <- debt_raw %>% select(country, year, GC.DOD.TOTL.GD.ZS) %>%
-                rename(central_gov_debt = GC.DOD.TOTL.GD.ZS)
 
 ## Deficit ------
 # Downloaded from: http://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&language=en&pcode=teina200&plugin=1
@@ -129,6 +136,10 @@ comb <- merge(comb, euro, by = c('country', 'year'), all.x = T)
 
 comb$euro_member[is.na(comb$euro_member)] <- 0
 comb <- comb %>% arrange(country, year, version)
+
+# Reinsert Euroarea exchange rate
+comb <- FillIn(comb, euro_exchange, Var1 = 'exchange_usd', KeyVar = 'year')
+
 
 ## Saved merged data ------
 export(comb, 'data_cleaning/main_merged.csv')
@@ -185,6 +196,7 @@ m1_10 <- lm(cum_revision ~ years_since_original + general_gov_deficit +
 
 # deficit revisions
 deficit <- comb %>% filter(component == 'deficit')
+
 m2_1 <- lm(cum_revision ~ years_since_original + euro_member +
                as.factor(country), data = deficit)
 
