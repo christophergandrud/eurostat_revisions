@@ -170,8 +170,7 @@ m1_3 <- lm(cum_revision ~ years_since_original + general_gov_deficit +
 m1_4 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected +
                as.factor(country), data = debt)
 
-m1_5 <- lm(cum_revision ~ years_since_original + 
-               endog_3 +
+m1_5 <- lm(cum_revision ~ years_since_original + endog_3 +
                as.factor(country), data = debt)
 
 m1_6 <- lm(cum_revision ~ years_since_original + yrcurnt_corrected + 
@@ -193,6 +192,29 @@ m1_9 <- lm(cum_revision ~ years_since_original +
 m1_10 <- lm(cum_revision ~ years_since_original + general_gov_deficit +
                endog_3*finstress_mean +
                as.factor(country), data = debt)
+
+## Drop Greek outlier
+debt_no_greece <- debt %>% filter(country != 'Greece')
+
+m1_no_greece1 <- lm(cum_revision ~ years_since_original +
+                    endog_3*finstress_mean +
+                    as.factor(country), data = debt_no_greece)
+
+m1_no_greece2 <- lm(cum_revision ~ years_since_original +
+                       endog_3 + finstress_mean +
+                       as.factor(country), data = debt_no_greece)
+
+m1_no_greece3 <- lm(cum_revision ~ years_since_original +
+                        yrcurnt_corrected +
+                        as.factor(country), data = debt_no_greece)
+
+m1_no_greece4 <- lm(cum_revision ~ years_since_original +
+                        yrcurnt_corrected*finstress_mean +
+                        as.factor(country), data = debt_no_greece)
+
+m1_no_greece5 <- lm(cum_revision ~ years_since_original +
+                        yrcurnt_corrected + finstress_mean +
+                        as.factor(country), data = debt_no_greece)
 
 # deficit revisions
 deficit <- comb %>% filter(component == 'deficit')
