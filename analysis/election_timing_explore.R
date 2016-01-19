@@ -1,4 +1,4 @@
-# ---------------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------- 
 # Eurostat revisions and election timing explore
 # MIT LICENSE
 # ---------------------------------------------------------------------------- #
@@ -153,10 +153,26 @@ comb$endog_3 <- factor(comb$endog_3,
 
 comb$endog_3 <- relevel(comb$endog_3, ref = 'No election')
 
+comb$from_2010 <- 0
+comb$from_2010[comb$year >= 2010] <- 1
+
 ## Estimate models -------
 # debt revisions
 debt <- comb %>% filter(component == 'debt')
 FindDups(debt, c('country', 'year', 'version'))
+
+
+debt <- slide(debt, Var = 'cum_revision', TimeVar = 'version', 
+              GroupVar = 'country', NewVar = 'lag_cum_revision',
+              slideBy = -1)
+
+debt <- slide(debt, Var = 'cum_revision', TimeVar = 'version', 
+              GroupVar = 'country', NewVar = 'lead_cum_revision',
+              slideBy = 1)
+
+debt <- slide(debt, Var = 'finstress_mean', TimeVar = 'version', 
+              GroupVar = 'country', NewVar = 'lag_finstress_mean',
+              slideBy = -1)
 
 m1_1 <- lm(cum_revision ~ years_since_original + euro_member + 
              as.factor(country), data = debt)
