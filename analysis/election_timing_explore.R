@@ -21,6 +21,9 @@ setwd('/git_repositories/eurostat_revisions/')
 # Load plot function
 devtools::source_gist('d270ff55c2ca26286e90')
 
+# Function to reverse the direction of the election timing variable
+reverser <- function(x) max(x, na.rm = T) - x
+
 # Import
 comb <- import('data_cleaning/main_merged.csv')   
 
@@ -32,6 +35,8 @@ comb$endog_3 <- relevel(comb$endog_3, ref = 'No election')
 
 comb$from_2010 <- 0
 comb$from_2010[comb$year >= 2010] <- 1
+
+comb$yrcurnt_corrected <- reverser(comb$yrcurnt_corrected)
 
 ## Estimate models -------
 # debt revisions
@@ -139,9 +144,9 @@ m2_10 <- lm(cum_revision ~ years_since_original + euro_member +
 
 ## Create results tables -------
 vars <- c('Yrs. Since Original', 'Eurozone', 'Cent. Gov. Debt', 
-          'Gen. Gov. Deficit', 'Yrs. to Election', 'Unscheduled Elect.',
+          'Gen. Gov. Deficit', 'Election Timing', 'Unscheduled Elect.',
           'Scheduled Elect.',
-          'Financial Stress', 'Yrs. to Elect.*Fin. Stress', 
+          'Financial Stress', 'Elect. Timing*Fin. Stress', 
           'Unscheduled.Elect*Fin. Stress', 'Scheduled.Elect*Fin. Stress')
 
 
@@ -158,8 +163,8 @@ stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10,
           out = 'working_paper/tables/debt_regressions.tex')
 
 vars_no_greece <- c('Yrs. Since Original', 'Financial Stress', 
-                    'Yrs. to Election', 'Unscheduled Elect.', 'Scheduled Elect.',
-                    'Yrs. to Elect.*Fin. Stress', 
+                    'Election Timing', 'Unscheduled Elect.', 'Scheduled Elect.',
+                    'Elect. Timing*Fin. Stress', 
                     'Unscheduled Elect*Fin. Stress', 
                     'Scheduled Elect*Fin. Stress')
 
@@ -195,7 +200,7 @@ fsi_elect_me <- plot_me(m1_8, term1 = 'yrcurnt_corrected',
                               term2 = 'fsi_annual_mean',
         fitted2 = seq(0, 0.58, by = 0.05)) +
     xlab('\nAnnual Financial Stress Mean') + 
-    ylab('Marginal Effect of Being a Year Further Away from a Scheduled Election\n')
+    ylab('Marginal Effect of Being a Year Closer to a Scheduled Election\n')
 
 ggsave(fsi_elect_me, 
        filename = 'working_paper/figures/fsi_elect_debt_me.pdf')
@@ -211,14 +216,14 @@ ggsave(fsi_scheduled_me,
        filename = 'working_paper/figures/fsi_unscheduled_debt_me.pdf')
 
 ## ME for Deficit revisions and scheduled elections
-fsi_non_endog_deficit_me <- plot_me(m2_9, term1 = 'endog_3Scheduled', 
+fsi_election_timing_deficit_me <- plot_me(m2_8, term1 = 'yrcurnt_corrected', 
         term2 = 'fsi_annual_mean',
         fitted2 = seq(0, 0.58, by = 0.05)) +
     xlab('\nAnnual Financial Stress Mean') + 
-    ylab('Marginal Effect of a Scheduled Election\n')
+    ylab('Marginal Effect of Being a Year Closer to a Scheduled Election\n')
 
-ggsave(fsi_non_endog_deficit_me, 
-       filename = 'working_paper/figures/fsi_scheduled_deficit_me.pdf')
+ggsave(fsi_election_timing_deficit_me, 
+       filename = 'working_paper/figures/fsi_elect_timing_deficit_me.pdf')
 
 # Election timing and Financial Stress (no Greece)
 # Re run to flip term order
@@ -234,7 +239,7 @@ fsi_elect_me_nogr <- plot_me(m1_no_greece1, term1 = 'yrcurnt_corrected',
                              term2 = 'fsi_annual_mean',
                              fitted2 = seq(0, 0.58, by = 0.05)) +
     xlab('\nAnnual Financial Stress Mean') + 
-    ylab('Marginal Effect of Being a Year Further Away from a Scheduled Election\n')
+    ylab('Marginal Effect of Being a Year Closer to a Scheduled Election\n')
 
 # Election timing and Unscheduled elections
 fsi_scheduled_me_nogr <- plot_me(m1_no_greece2, term1 = 'endog_3Unscheduled', 
