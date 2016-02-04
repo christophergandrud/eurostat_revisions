@@ -31,7 +31,7 @@
 \title{Fiscal Rule Stretching in Europe During Financial Market Stress and Crises}
 
 \author{Christopher Gandrud \\ \emph{City University London} \\ \emph{Hertie School of Governance}\footnote{Please contact Christopher Gandrud
-(\href{mailto:christopher.gandrud@city.ac.uk}{\nolinkurl{christopher.gandrud@city.ac.uk}}) or Mark Hallerberg (\href{mailto:hallerberg@hertie-school.org}{\nolinkurl{hallerberg@hertie-school.org}}). Full data and replication material can be found at: \url{https://github.com/christophergandrud/eurostat_revisions}.}
+(\href{mailto:christopher.gandrud@city.ac.uk}{\nolinkurl{christopher.gandrud@city.ac.uk}}) or Mark Hallerberg (\href{mailto:hallerberg@hertie-school.org}{\nolinkurl{hallerberg@hertie-school.org}}). Thank you to workshop participants at Texas A \& M University. Our research is generously supported by the Deutsche Forschungsgemeinschaft (No. HA5996/2-1). Replication material can be found at: \url{https://github.com/christophergandrud/eurostat_revisions}.}
 \and
 Mark Hallerberg \\ \emph{Hertie School of Governance}}
 
@@ -43,8 +43,7 @@ Mark Hallerberg \\ \emph{Hertie School of Governance}}
 \addeditor{CG}
 
 \begin{center}
-    \textbf{Very early, incomplete working draft for\\ Texas A \& M University: Fiscal Policy in Europe Workshop (10-11 December 2015) \\
-    Comments and suggestions very welcome.}
+    \textbf{Incomplete working draft. Comments and suggestions very welcome.}
 \end{center}
 
 \begin{abstract}
@@ -157,11 +156,11 @@ Let's move onto the electoral and financial market stress variables. There does 
 
 
 \begin{figure}
-    \caption{Marginal Effect of Election Timing (years to election) at Various Levels of Financial Market Stress on \textbf{Debt} Revisions}
+    \caption{Marginal Effect of Being Further Away from a Scheduled Election at Various Levels of Financial Market Stress on \textbf{Debt} Revisions}
     \label{me_finstress_elect}
 
     \begin{center}
-        \includegraphics[scale=0.4]{figures/finstress_elect_me.pdf}
+        \includegraphics[scale=0.4]{figures/fsi_elect_debt_me.pdf}
     \end{center}
 
 	{\scriptsize{Shaded area represents 95\% confidence interval.}}
@@ -173,7 +172,7 @@ Let's move onto the electoral and financial market stress variables. There does 
     \label{me_finstress_endog_elect}
 
     \begin{center}
-        \includegraphics[scale=0.4]{figures/finstress_endog_elect_me.pdf}
+        \includegraphics[scale=0.4]{figures/fsi_unscheduled_debt_me.pdf}
     \end{center}
 
 	{\scriptsize{Shaded area represents 95\% confidence interval.}}
@@ -184,7 +183,7 @@ Let's move onto the electoral and financial market stress variables. There does 
 	\caption{Predicted \textbf{Debt} Revisions in Three Years After Publication for Years with Different Election Types/Non-election Years}
     \label{country_predict_debt_required}
     \begin{center}
-    	\includegraphics[scale=0.7]{figures/country_predict_required.pdf}
+    	\includegraphics[scale=0.8]{figures/country_predict_required.pdf}
     \end{center}
 
 	{\scriptsize{High and Low stress values refer to country minimum and maximum FinStress scores in the sample.\\
@@ -198,7 +197,7 @@ Let's move onto the electoral and financial market stress variables. There does 
     \caption{Marginal Effect of a Non-Endogenous Election at Various Levels of Financial Market Stress on \textbf{Deficit} Revisions}
     \label{me_finstress_non_endog_deficit}
     \begin{center}
-        \includegraphics[scale=0.4]{figures/finstress_non_endog_deficit_me.pdf}
+        \includegraphics[scale=0.4]{figures/fsi_scheduled_deficit_me.pdf}
     \end{center}
 
 	{\scriptsize{Shaded area represents 95\% confidence interval.}}
@@ -220,12 +219,37 @@ A major takeaway from our work is that even among a group of developed economies
 \bibliographystyle{apsr}
 \bibliography{main.bib}
 
+\pagebreak
+\renewcommand{\thepage}{A-\arabic{page}}\setcounter{page}{1}
+\renewcommand{\thesection}{Appendix \arabic{section}}\setcounter{section}{0}
+\renewcommand{\thetable}{A-\arabic{table}}\setcounter{table}{0}
+\renewcommand{\thefigure}{A-\arabic{figure}}\setcounter{figure}{0}
 \clearpage
 
-\section*{Appendix}
+\section*{Online Appendix}
+
+\subsection*{Crisis and selection into unscheduled elections}
 
 We ran a number of tests to examine whether or not governments select into endogenous elections according to the prevailing level of financial market stress. Table \ref{finstress_endog} shows results from a logistic regression where we tried to predict having an endogenous election in a year for our sample based on annual average FinStress level. We can see that there is a null result. We made a similar finding when running a multinomial logistic regression (not shown), with endogenous and non-endogenous elections as categories and no election as the reference category.
 
-\input{tables/finstress_predict_endog.tex}
+\input{tables/fsi_predict_endog.tex}
+
+\subsection*{Omitting Greece}
+
+Greece very large debt revisions in our sample. For 2007 through 2011 Greece's debt statistics were cumulatively revised upward by over 10 percentage points. To examine if this one case was driving our election results, we reran our models omitting Greece. The numeric results are show in Table \ref{debt_no_greece_results} and marginal effect plots for scenarios discussed in the main paper are in Figure \ref{me_no_greece}
+
+\input{tables/debt_no_greece_regressions.tex}
+
+\begin{figure}
+    \caption{Marginal Effect of Election Variables on \textbf{Debt} Revisions (sample excluding Greece)}
+    \label{me_no_greece}
+
+    \begin{center}
+        \includegraphics[scale=0.4]{figures/debt_me_nogreece.pdf}
+    \end{center}
+
+	{\scriptsize{Shaded area represents 95\% confidence interval.}}
+
+\end{figure}
 
 \end{document}
