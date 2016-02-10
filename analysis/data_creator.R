@@ -79,14 +79,17 @@ endog_election$endog_3[endog_election$endog_predHW == 0 &
 FindDups(endog_election, c('country', 'year'))
 
 ## Debt figures from the World Bank Development Indicators ----
-debt_raw <- WDI(indicator = c('GC.DOD.TOTL.GD.ZS', 'PA.NUS.FCRF'), 
+debt_raw <- WDI(indicator = c('GC.DOD.TOTL.GD.ZS', 'PA.NUS.FCRF', 
+                              'NY.GDP.MKTP.KD.ZG'), 
                 start = 2000, end = 2015)
 
-debt_raw <- debt_raw %>% select(country, year, GC.DOD.TOTL.GD.ZS, PA.NUS.FCRF) %>%
+debt_raw <- debt_raw %>% select(country, year, GC.DOD.TOTL.GD.ZS, PA.NUS.FCRF,
+                                NY.GDP.MKTP.KD.ZG) %>%
     rename(central_gov_debt = GC.DOD.TOTL.GD.ZS) %>%
-    rename(exchange_usd = PA.NUS.FCRF)
+    rename(exchange_usd = PA.NUS.FCRF) %>%
+    rename(gdp_growth = NY.GDP.MKTP.KD.ZG)
 
-# Extract euro exchange rat and place it in for euro countries
+# Extract euro exchange rate and place it in for euro countries
 euro_exchange <- debt_raw %>% filter(country == 'Euro area') %>% 
     select(year, exchange_usd)
 

@@ -6,14 +6,11 @@
 
 library(rio)
 library(dplyr)
-library(lubridate)
 library(ggplot2)
 library(gridExtra)
 library(devtools)
 library(stargazer)
 library(DataCombine)
-library(stringr)
-library(tidyr)
 
 # Set working directory. Change as needed
 setwd('/git_repositories/eurostat_revisions/')
