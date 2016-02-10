@@ -128,7 +128,7 @@ We created variables of \emph{cumulative revisions for debts and deficits} up to
     \begin{center}
         \caption{Median \textbf{Debt} Revisions for Data Released Under Various Electoral Conditions}
         \label{median_debt_revisions}
-        \includegraphics[scale=0.6]{figures/median_debt_revisions.pdf}
+        \includegraphics[scale=0.55]{figures/median_debt_revisions.pdf}
     \end{center}
 \end{figure}
 
@@ -136,7 +136,7 @@ We created variables of \emph{cumulative revisions for debts and deficits} up to
     \begin{center}
         \caption{Median \textbf{Deficit} Revisions for Data Released Under Various Electoral Conditions}
         \label{median_deficit_revisions}
-        \includegraphics[scale=0.6]{figures/median_deficit_revisions.pdf}
+        \includegraphics[scale=0.55]{figures/median_deficit_revisions.pdf}
     \end{center}
 \end{figure}
 
@@ -144,11 +144,11 @@ Figures \ref{median_debt_revisions} and \ref{median_deficit_revisions} show the 
 
 Figure \ref{median_debt_revisions} plots clearly indicates that revisions are higher for budget data released in years with elections, especially when they are unscheduled. The difference appear from about five to seven revisions, e.g. from two years after the first data was released.
 
-The pattern is somewhat less clear for deficit revisions, though the possible effect is in the same theoretical direction as we found in the debt revisions. For example, in the left-panel of Figure \ref{median_deficit_revisions} years far away from a scheduled election--i.e. four and to a less extent three years from the election--
+The pattern is somewhat less clear for deficit revisions, though the possible effect is in the same theoretical direction as we found in the debt revisions. For example, in the left-panel of Figure \ref{median_deficit_revisions} years far away from a scheduled election--i.e. three and four years from the election--deficits are generally either not revised or slightly revised upwards such that the government ran a slight surplus relative to the original data. Conversely, data for years closer to an election are revised somewhat downward. In other words, governments spent more relative to their income than they had originally reported. The right-panel of Figure \ref{median_deficit_revisions} indicates that both scheduled and unscheduled election years see larger median downward deficit revisions. There appears to be a small difference between these two types of elections with unscheduled elections having somewhat larger downward revisions by the seventh revision.
 
 \subsection{Right-hand variables}
 
-To test whether governments are more likely to stretch the rules closer to elections, we use Gandrud's \citeyearpar{gandrudYrcurnt} \emph{years to election} variable. The variable counts down from the year that is the furthest away based on national election requirements. Election years are recorded as zero. To make the following marginal effect estimates more intuitive--i.e. so that a positive coefficient would indicate that being closer to an election was associated with an increase in revisions, we reversed the scale.
+To further explore whether governments are more likely to stretch the rules closer to elections and whether this effect interacts with financial market stress, we use Gandrud's \citeyearpar{gandrudYrcurnt} \emph{years to election} variable in the following regressions. The variable counts down from the year that is the furthest away based on national election requirements. Election years are recorded as zero. To make the following marginal effect estimates more intuitive--i.e. so that a positive coefficient would indicate that being closer to an election was associated with an increase in revisions, we reversed the scale.
 
 Not only do we expect that governments are more likely to use rule stretching as elections approach, but that rule stretching should be more prevalent when governments are not able to choose when the election occurs so as to present themselves in the best fiscal light to voters. As such, we also include a dummy variable that is one for \emph{required elections} (e.g. scheduled elections) and zero for all other years. The variable is from \cite{Brender2008}, and it was updated and corrected by Hallerberg and Wehner (2015). We expect that the revisions will be greater for years when there is an unscheduled election.
 
@@ -170,11 +170,9 @@ We can see in Table \ref{debt_results}, model 3 that years from an election is e
 
 To understand the direction and magnitude of these interactive effects, figures \ref{me_finstress_elect} and \ref{me_finstress_endog_elect} show marginal effects of the election variables at various levels of financial market stress. At high FinStress levels, e.g. above 0.55,\footnote{\cite{finstress_paper} find that countries classified by \cite{Laeven2012} as being in banking crises tend to have FinStress scores above 0.55, especially in developed economies such as those found in the EU.} the marginal effect of being one more year removed from an election on debt revisions is about -0.2 percentage points of GDP. Figure \ref{me_finstress_endog_elect} shows that having an unscheduled election during a similar high stress period increases debt revisions by about 2 percentage points of GDP.
 
-To get a sense of how these average effects may play out in each country, we predicted the debt revisions by the third revision year for 27 EU member states.\footnote{We did not include the newest member--Croatia--as its figures have been subject to Eurostat oversight for relatively few years.} Using estimates shown in model 9 of Table \ref{debt_results}, we predicted revisions for non-election years, unscheduled election years, and scheduled election years at observed country minimum and maximum FinStress values. The predictions are shown in Figure \ref{country_predict_debt_required}. Please note that while we used observed country FinStress ranges these plots make frequent out of sample predictions as most countries did not have unscheduled and scheduled elections at these levels of stress. Basic country effects correspond to our priors, namely Greece has very large revisions regardless of election year and type. Typically, when countries are fitted to have unscheduled elections at high stress levels, e.g. Belgium, Denmark, Latvia, Ireland, Spain, and so on, we predict that their debt figures will be revised by about 3.25 percentage points of GDP.
+%To get a sense of how these average effects may play out in each country, we predicted the debt revisions by the third revision year for 27 EU member states.\footnote{We did not include the newest member--Croatia--as its figures have been subject to Eurostat oversight for relatively few years.} Using estimates shown in model 9 of Table \ref{debt_results}, we predicted revisions for non-election years, unscheduled election years, and scheduled election years at observed country minimum and maximum FinStress values. The predictions are shown in Figure \ref{country_predict_debt_required}. Please note that while we used observed country FinStress ranges these plots make frequent out of sample predictions as most countries did not have unscheduled and scheduled elections at these levels of stress. Basic country effects correspond to our priors, namely Greece has very large revisions regardless of election year and type. Typically, when countries are fitted to have unscheduled elections at high stress levels, e.g. Belgium, Denmark, Latvia, Ireland, Spain, and so on, we predict that their debt figures will be revised by about 3.25 percentage points of GDP.
 
-\subsection{Deficit Revisions}
-
-[Rewrite]
+%\subsection{Deficit Revisions}
 
 %We also examined if election type and election timing affected the need for revisions to governments' deficit figures (Table \ref{deficit_results}). First, it is interesting to note that while higher debt levels did not appear to be related to debt figures that required more revisions, higher deficit levels are associated with higher deficit revisions. Perhaps this is related to the primary importance of the 3 percent deficit target placed by Stability and Growth Pact monitors for most of the sample until the Eurozone debt crisis.\footnote{Remember that the sample used in our regressions goes through 2011, only one year after the real start of the debt crisis.} Similarly, we find that being in the eurozone decreases the estimated size of deficit, but not debt revisions. Perhaps this is because countries in the eurozone, which are subject to SGP enforcement, were under greater scrutiny and penalty for breaching the SGP's deficit limits. This suggests that having a relatively strong fiscal monitor could decrease governments' tendency to manipulate figures in fixed exchange rate regimes.
 
@@ -184,54 +182,12 @@ To get a sense of how these average effects may play out in each country, we pre
     \input{tables/debt_regressions.tex}
 \end{landscape}
 
-\begin{landscape}
-    \input{tables/deficit_regressions.tex}
-\end{landscape}
-
-
 \begin{figure}
-    \caption{Marginal Effect of Being a Year Closer to a Scheduled Election at Various Levels of Financial Market Stress on \textbf{Debt} Revisions}
+    \caption{Marginal Effect of Election Conditions at Various Levels of Financial Market Stress on \textbf{Debt} Revisions}
     \label{me_finstress_elect}
 
     \begin{center}
-        \includegraphics[scale=0.4]{figures/fsi_elect_debt_me.pdf}
-    \end{center}
-
-	{\scriptsize{Shaded area represents 95\% confidence interval.}}
-
-\end{figure}
-
-\begin{figure}
-    \caption{Marginal Effect of an Unscheduled Election at Various Levels of Financial Market Stress on \textbf{Debt} Revisions}
-    \label{me_finstress_endog_elect}
-
-    \begin{center}
-        \includegraphics[scale=0.4]{figures/fsi_unscheduled_debt_me.pdf}
-    \end{center}
-
-	{\scriptsize{Shaded area represents 95\% confidence interval.}}
-
-\end{figure}
-
-\begin{figure}
-	\caption{Predicted \textbf{Debt} Revisions in Three Years After Publication for Years with Different Election Types/Non-election Years}
-    \label{country_predict_debt_required}
-    \begin{center}
-    	\includegraphics[scale=0.7]{figures/country_predict_required.pdf}
-    \end{center}
-
-	{\scriptsize{High and Low stress values refer to country minimum and maximum FinStress scores in the sample.\\
-    Croatia excluded due to a small number of revision years.\\
-    Shaded areas show 95\% confidence intervals.
-}}
-
-\end{figure}
-
-\begin{figure}
-    \caption{Marginal Effect of Being a Year Closer to a Scheduled Election at Various Levels of Financial Market Stress on \textbf{Deficit} Revisions}
-    \label{me_finstress_non_elect_deficit}
-    \begin{center}
-        \includegraphics[scale=0.4]{figures/fsi_elect_timing_deficit_me.pdf}
+        \includegraphics[scale=0.45]{figures/fsi_elect_me.pdf}
     \end{center}
 
 	{\scriptsize{Shaded area represents 95\% confidence interval.}}
@@ -270,13 +226,9 @@ We ran a number of tests to examine whether or not governments select into unsch
 
 \subsection*{Omitting Greece}
 
-Greece very large debt revisions in our sample. For 2007 through 2011 Greece's debt statistics were cumulatively revised upward by over 10 percentage points. To examine if this one case was driving our election results, we reran our models omitting Greece. The numeric results are show in Table \ref{debt_no_greece_results} and marginal effect plots for scenarios discussed in the main paper are in Figure \ref{me_no_greece}.
+Greece very large debt revisions in our sample. For 2007 through 2011 Greece's debt statistics were cumulatively revised upward by over 10 percentage points. To examine if this one case was driving our election results, we reran our models omitting Greece. The numeric results are show in Marginal effect plots from models without Greece for scenarios discussed in the main paper are in Figure \ref{me_no_greece}. We can see that the magnitude and of the effects decrease somewhat and the confidence bounds expand with Greece excluded.
 
-Compared to the marginal effects in figures \ref{me_finstress_elect} and \ref{me_finstress_endog_elect} in the main text, once we drop Greece and its very large debt revisions the magnitude of the relationships shown in Figure \ref{me_no_greece} are noticeably weaker. However, they are still statistically and substantively significant. For example, we estimate that at higher levels of financial market stress being an year closer to the election increases debt revisions by about 0.2 to 0.3 percentage points. Having an endogenous election at similarly high levels of stress is associated with a one to two percentage point increase in debt revisions.
-
-\input{tables/debt_no_greece_regressions.tex}
-
-\begin{figure}
+\begin{figure}[H]
     \caption{Marginal Effect of Election Variables on \textbf{Debt} Revisions (sample excluding Greece)}
     \label{me_no_greece}
 
@@ -287,5 +239,13 @@ Compared to the marginal effects in figures \ref{me_finstress_elect} and \ref{me
 	{\scriptsize{Shaded area represents 95\% confidence interval.}}
 
 \end{figure}
+
+\subsection*{Deficit Revisions}
+
+We ran similar models as those found in Table \ref{debt_results}, but with cumulative deficit revisions as the dependent variable. These results are shown in Table \ref{deficit_results}. We can see that there is no evidence in these models to support hypotheses regarding electoral effects on deficit revisions, including in interaction with financial market stress. This finding is in line with our expectations, as overwhelmingly fiscal rule stretching in response to financial crisis will be on the debt, rather than deficit component of the budget.
+
+\begin{landscape}
+    \input{tables/deficit_regressions.tex}
+\end{landscape}
 
 \end{document}
