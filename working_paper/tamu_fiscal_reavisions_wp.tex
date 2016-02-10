@@ -124,9 +124,31 @@ We gathered a data set of all revisions that Eurostat made to EU member state de
 
 We created variables of \emph{cumulative revisions for debts and deficits} up to and including each revision point. We used these as our dependent variables. For cumulative debt revisions, the variable ranged from -1.1 to 12.7 percent of GDP. For cumulative deficit revisions, the variable ranged from -4.5 to 1.1 percent of GDP. It is important to note that all of these revisions were not due to updates made to the denominator, or to GDP. Eurostat reports GDP revisions separately from corrections made to debt and deficit figures. As \cite{DeCastro2013} found for similar Eurostat data in a shorter pre-financial crisis sample, there is a clear tendency for debt statistics to be revised upward and deficit statistics downward, indicating that policies are more expensive than initially reported.
 
+\begin{figure}
+    \begin{center}
+        \caption{Median \textbf{Debt} Revisions for Data Released Under Various Electoral Conditions}
+        \label{median_debt_revisions}
+        \includegraphics[scale=0.6]{figures/median_debt_revisions.pdf}
+    \end{center}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \caption{Median \textbf{Deficit} Revisions for Data Released Under Various Electoral Conditions}
+        \label{median_deficit_revisions}
+        \includegraphics[scale=0.6]{figures/median_deficit_revisions.pdf}
+    \end{center}
+\end{figure}
+
+Figures \ref{median_debt_revisions} and \ref{median_deficit_revisions} show the cumulative Eurostat debt and deficit revisions, respectively, in our sample under different electoral conditions. Note: below we discuss the electoral variables in detail.\footnote{In figures \ref{median_debt_revisions} and \ref{median_deficit_revisions} we use the original electoral timing variable, not the reversed scale as, in this case, the original scale is easier to interpret.}
+
+Figure \ref{median_debt_revisions} plots clearly indicates that revisions are higher for budget data released in years with elections, especially when they are unscheduled. The difference appear from about five to seven revisions, e.g. from two years after the first data was released.
+
+The pattern is somewhat less clear for deficit revisions, though the possible effect is in the same theoretical direction as we found in the debt revisions. For example, in the left-panel of Figure \ref{median_deficit_revisions} years far away from a scheduled election--i.e. four and to a less extent three years from the election--
+
 \subsection{Right-hand variables}
 
-To test whether governments are more likely to stretch the rules closer to elections, we use Gandrud's \citeyearpar{gandrudYrcurnt} \emph{years to election} variable. The variable counts down from the year that is the furthest away based on national election requirements. Election years are recorded as zero. To make the results more intuitive--i.e. so that a positive coefficient would indicate that being closer to an election was associated with an increase in revisions, we reversed the scale.
+To test whether governments are more likely to stretch the rules closer to elections, we use Gandrud's \citeyearpar{gandrudYrcurnt} \emph{years to election} variable. The variable counts down from the year that is the furthest away based on national election requirements. Election years are recorded as zero. To make the following marginal effect estimates more intuitive--i.e. so that a positive coefficient would indicate that being closer to an election was associated with an increase in revisions, we reversed the scale.
 
 Not only do we expect that governments are more likely to use rule stretching as elections approach, but that rule stretching should be more prevalent when governments are not able to choose when the election occurs so as to present themselves in the best fiscal light to voters. As such, we also include a dummy variable that is one for \emph{required elections} (e.g. scheduled elections) and zero for all other years. The variable is from \cite{Brender2008}, and it was updated and corrected by Hallerberg and Wehner (2015). We expect that the revisions will be greater for years when there is an unscheduled election.
 
