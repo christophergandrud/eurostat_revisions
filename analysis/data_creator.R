@@ -143,7 +143,12 @@ fiscal_trans <- fiscal_trans[, c(17, 4:14)]
 
 fiscal_trans <- fiscal_trans %>% gather(year, fiscal_trans_gfs, 
                                         2:ncol(fiscal_trans)) %>%
-    arrange(country, year)
+                    arrange(country, year)
+
+## Excessive deficit procudure (updated from Baerg and Hallerberg 2016) --------
+edp <- import('data_cleaning/raw/edp_updated.csv')
+edp <- edp %>% rename(year = actualyear)
+
 
 ## Combine ------
 comb <- merge(timing, revisions, by = c('country', 'year'))
@@ -153,6 +158,7 @@ comb <- merge(comb, endog_election, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, deficit_debt, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, euro, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, fiscal_trans, by = c('country', 'year'), all.x = T)
+comb <- merge(comb, edp, by = c('country', 'year'), all.x = T)
 
 
 comb$euro_member[is.na(comb$euro_member)] <- 0
