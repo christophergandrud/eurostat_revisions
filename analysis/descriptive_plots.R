@@ -51,7 +51,7 @@ timing_debt <- ggplot(median_rev_timing, aes(counter, median_revision,
     scale_linetype(name = 'Yrs. to\nElection') +
     scale_color_brewer(palette = 'Set1', name = 'Yrs. to\nElection') +
     scale_x_continuous(breaks = c(1, 3, 5, 7)) +
-    ylab('Median Cumulative Debt Revision\n') +
+    ylab('Median Cumulative Debt Revision (% GDP)\n') +
     xlab('') +
     theme_bw()
 
@@ -106,7 +106,7 @@ timing_deficit <- ggplot(median_rev_timing, aes(counter, median_revision,
     scale_linetype(name = 'Yrs. to\nElection') +
     scale_color_brewer(palette = 'Set1', name = 'Yrs. to\nElection') +
     scale_x_continuous(breaks = c(1, 3, 5, 7)) +
-    ylab('Median Cumulative Deficit Revision\n') +
+    ylab('Median Cumulative Deficit Revision (% GDP)\n') +
     xlab('') +
     theme_bw()
 

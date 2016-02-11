@@ -132,6 +132,19 @@ euro <- import('https://raw.githubusercontent.com/christophergandrud/euro_member
 euro$euro_member <- 1
 euro <- euro %>% select(-iso2c)
 
+# Wang et al. GFS Fiscal transparency -----------
+# Downloaded from https://www.imf.org/External/pubs/cat/longres.aspx?sk=43177.0
+fiscal_trans <- import('data_cleaning/raw/wp15188.xlsx', sheet = "GFS Index Score", 
+                       skip = 2)
+fiscal_trans$country <- countrycode(fiscal_trans$Country, origin = 'country.name',
+                                    destination = 'country.name')
+
+fiscal_trans <- fiscal_trans[, c(17, 4:14)]
+
+fiscal_trans <- fiscal_trans %>% gather(year, fiscal_trans_gfs, 
+                                        2:ncol(fiscal_trans)) %>%
+    arrange(country, year)
+
 ## Combine ------
 comb <- merge(timing, revisions, by = c('country', 'year'))
 comb <- merge(comb, fsi, by = c('country', 'year'), all.x = T)
@@ -139,6 +152,8 @@ comb <- merge(comb, finstress_yr_mean, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, endog_election, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, deficit_debt, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, euro, by = c('country', 'year'), all.x = T)
+comb <- merge(comb, fiscal_trans, by = c('country', 'year'), all.x = T)
+
 
 comb$euro_member[is.na(comb$euro_member)] <- 0
 comb <- comb %>% arrange(country, year, version)
