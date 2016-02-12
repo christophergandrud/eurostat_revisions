@@ -144,7 +144,7 @@ To examine how responding to financial market stress may exacerbate governments'
 
 We hypothesize that the effect of election timing on rule stretching will increase at higher levels of financial market stress. So in the following discussion we focus on interactions between FinStress and the election timing and election type variables.
 
-So far we have only operationalised the direct domestic--voter--audience for rule stretching. To examine the ``international'' audience, we examine whether the level of government gross debts effects the propensity of rule stretching and therefore revisions by Eurostat. Perhaps countries that have higher debts and so are in threat of, or have actually breached, the SGP's limits will be more likely to rule stretch. We would expect that countries in the Eurozone specifically would be more likely to rule stretch when their debts are around and above 60 percent of GDP in order to stay under the SGP's 60 percent debt to GDP limit. A such, we interact central government gross debt 
+So far we have only operationalised the direct domestic--voter--audience for rule stretching. To examine the ``international'' audience, we examine whether the level of government gross debts effects the propensity of rule stretching and therefore revisions by Eurostat. Perhaps countries that have higher debts and so are in threat of, or have actually breached, the SGP's limits will be more likely to rule stretch. We would expect that countries in the Eurozone specifically would be more likely to rule stretch when their debts are around and above 60 percent of GDP in order to stay under the SGP's 60 percent debt to GDP limit. A such, we interact central government gross debt
 
 \todo{Rewrite the following paragraph}
 
@@ -152,13 +152,13 @@ If this were the case, we would expect that in our sample, higher deficits will 
 
 In some model specifications we included a dummy variable for eurozone membership. An important consideration in enforcement through the EDP is governments' good faith in returning to compliance. Fiscal rule stretching may be viewed as a bad faith move. As such countries subject to SGP enforcement may be less likely to rule stretch. All member states are covered under the monitoring procedures of the Stability and Growth Pact. However, non-eurozone members, such as the United Kingdom, face weaker or non-existent enforcement actions if they breach the SGP's debt and deficit limits. As such, we would expect that higher revisions would be associated with being outside of the eurozone. Conversely, inspired by \cite{clark2003}, perhaps countries in the eurozone having fixed exchange rates need to rely more on rule stretching and so eurozone membership is positively associated with revisions. Because of these conflicting predictions, we do not have strong priors on eurozone membership's effect.
 
-It could be that governments subject to higher \emph{fiscal policy transparency} may be less able to engage in fiscal rule stretching as this behaviour could perhaps be noticed earlier. There are reasons to be skeptical of this reasoning. Primarily, rule stretching is often involves the interpretation of highly technical rules that voters likely do not know or have a view on. Regardless, this is an empirical question we address by using a new fiscal transparency index created by \cite{Wang2015}. They measure the degree to which and what type of fiscal data is reported to the International Monetary Fund from 2003 to 2013. Their index ranges can range from zero to 100 (the maximum possible extent) in our sample of EU member states.
+It could be that governments subject to higher \emph{fiscal policy transparency} may be less able to engage in fiscal rule stretching as this behaviour could perhaps be noticed earlier. There are reasons to be skeptical of this reasoning. Primarily, rule stretching is often involves the interpretation of highly technical rules that voters likely do not know or have a view on. Regardless, this is an empirical question we address by using a new fiscal transparency index created by \cite{Wang2015}. They measure the degree to which and what type of fiscal data is reported to the International Monetary Fund from 2003 to 2013. Their index ranges can range from zero to 100 (the maximum possible extent) in our sample of EU member states. Fiscal transparency was never statistically significant in any of our models. As such, below we do not show results from models with fiscal transparency included.
 
 Finally, we also examined if economic growth as measured by year-over-year GDP growth (percentage) would affect revisions.\footnote{From the World Bank Development Indicators. Indicator ID NY.GDP.MKTP.KD.ZG. Accessed February 2016.} Perhaps governments with shrinking economies have incentives to rule stretch more \citep{DeCastro2013}. However, the estimated coefficient for this variable was not statistically significant at conventional levels, including in interaction with the electoral variables,\footnote{An interaction between GDP growth and election type was barely significant at the 10 percent level. However, this appears to largely be because GDP declines are associated with financial market stress. Estimates from a financial market stress interaction were much stronger.} so we do not include it in the results below.
 
 \section{Empirical Tests: results}
 
-Table \ref{debt_results} shows our results from linear regressions with cumulative debt and deficit revisions as the dependent variables, respectively. All models include country fixed effects to help account for unobserved country variation.
+Table \ref{debt_results} shows our results from linear regressions with cumulative debt and deficit revisions as the dependent variables, respectively. All models include country fixed effects to help account for unobserved country variation. Because a number of the variables are logically highly correlated with each other (e.g. countries under an EDP have high debts), we ran our models in a step-wise fashion.
 
 There appears to be some evidence (at the 10\% level) that the electoral conditions have the hypothesized effect on debt revisions. We estimate (in models 1 and 2, Table \ref{debt_results}) that being closer to elections and having an unscheduled election is associated with larger cumulative Eurostat debt data revisions later on. The election finding somewhat similar in direction and magnitude to what \cite{DeCastro2013} previously uncovered in Eurostat deficit revision data for 15 EU member states in a time-span that largely did not include the Eurozone and related crises.\footnote{Interestingly, we were not able to replicate their electoral effect on deficit findings in our sample. See the Appendix.}
 
@@ -179,7 +179,7 @@ There does not appear to be a difference between Eurozone members and non-member
 %Let's move onto the electoral and financial market stress variables. There does not appear to be an interactive relationship between financial market stress and years to election on deficit revisions. This could be because responses to financial market stress--bank nationalizations, guarantees, and so on--predominantly impact government debts rather than deficits and so opportunities for rule stretching are opportunities for debt rule stretching specifically. There does appear to be a statistically significant relationship between scheduled elections and FinStress that is similar to the interaction between unscheduled elections and stress in the debt revisions models (see Figure \ref{me_finstress_non_endog_deficit} for the marginal effects). More work is needed to understand this finding.
 
 \begin{figure}
-    \caption{Marginal Effect of Election Conditions at Various Levels of Financial Market Stress on \textbf{Debt} Revisions}
+    \caption{Marginal Effects of Election Conditions at Various Levels of Financial Market Stress on \textbf{Debt} Revisions}
     \label{me_finstress_elect}
 
     \begin{center}
@@ -187,6 +187,19 @@ There does not appear to be a difference between Eurozone members and non-member
     \end{center}
 
 	{\scriptsize{Shaded area represents 95\% confidence interval.}}
+
+\end{figure}
+
+\begin{figure}
+    \caption{Marginal Effects of Eurozone Membership and Being in an EDP at Various Levels of Government Debt and Years to Election on \textbf{Debt} Revisions}
+    \label{me_debt_edp_elect}
+
+    \begin{center}
+        \includegraphics[scale=0.45]{figures/edp_debt_elect_me.pdf}
+    \end{center}
+
+	{\scriptsize{Shaded area represents 95\% confidence interval.\\
+    The dashed vertical line in the left-panel indicates a debt level of 60\% of GDP. This is the Stability and Growth Pact debt limit past which member states can be put into an Excessive Deficit Procedure.}}
 
 \end{figure}
 
@@ -226,14 +239,26 @@ We ran a number of tests to examine whether or not governments select into unsch
 
 \subsection*{Omitting Greece}
 
-Greece very large debt revisions in our sample. For 2007 through 2011 Greece's debt statistics were cumulatively revised upward by over 10 percentage points. To examine if this one case was driving our election results, we reran our models omitting Greece. The numeric results are show in Marginal effect plots from models without Greece for scenarios discussed in the main paper are in Figure \ref{me_no_greece}. We can see that the magnitude and of the effects decrease somewhat and the confidence bounds expand with Greece excluded.
+Greece very large debt revisions in our sample. For 2007 through 2011 Greece's debt statistics were cumulatively revised upward by over 10 percentage points. To examine if this one case was driving our election results, we reran our models omitting Greece. The numeric results are show in Marginal effect plots from models without Greece for scenarios discussed in the main paper are in Figures \ref{me_no_greece} and \ref{me_no_greece_edp_timing}. We can see that the magnitude and of the effects decrease somewhat and the confidence bounds expand with Greece excluded. However, the broad substantive conclusions remain unchanged.
 
 \begin{figure}[H]
-    \caption{Marginal Effect of Election Variables on \textbf{Debt} Revisions (sample excluding Greece)}
+    \caption{Marginal Effects of Election Variables on \textbf{Debt} Revisions (sample excluding Greece)}
     \label{me_no_greece}
 
     \begin{center}
         \includegraphics[scale=0.4]{figures/debt_me_nogreece.pdf}
+    \end{center}
+
+	{\scriptsize{Shaded area represents 95\% confidence interval.}}
+
+\end{figure}
+
+\begin{figure}[H]
+    \caption{Marginal Effects of Eurozone Membership and Being in an EDP at Various Levels of Government Debt and Years to Election on \textbf{Debt} Revisions (sample excluding Greece)}
+    \label{me_no_greece_edp_timing}
+
+    \begin{center}
+        \includegraphics[scale=0.5]{figures/edp_debt_elect_me_nogr.pdf}
     \end{center}
 
 	{\scriptsize{Shaded area represents 95\% confidence interval.}}

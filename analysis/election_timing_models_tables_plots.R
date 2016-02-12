@@ -47,49 +47,61 @@ debt <- slide(debt, Var = 'cum_revision', TimeVar = 'version',
               slideBy = -1)
 
 # Debt Models
-m1_1 <- lm(cum_revision ~ lag_cum_revision + yrcurnt_corrected +
-               as.factor(country), data = debt)
-
-m1_2 <- lm(cum_revision ~ lag_cum_revision + endog_3 +
-               as.factor(country), data = debt)
-
-m1_3 <- lm(cum_revision ~ lag_cum_revision + yrcurnt_corrected + 
+m1_1 <- lm(cum_revision ~ lag_cum_revision + yrcurnt_corrected + 
                fsi_annual_mean +
                as.factor(country), data = debt)
 
-m1_4 <- lm(cum_revision ~ lag_cum_revision + endog_3 + 
+m1_2 <- lm(cum_revision ~ lag_cum_revision + endog_3 + 
                fsi_annual_mean +
                as.factor(country), data = debt)
 
-m1_5 <- lm(cum_revision ~ lag_cum_revision + 
+m1_3 <- lm(cum_revision ~ lag_cum_revision + 
                yrcurnt_corrected * fsi_annual_mean +
                as.factor(country), data = debt)
 
-m1_6 <- lm(cum_revision ~ lag_cum_revision +
+m1_4 <- lm(cum_revision ~ lag_cum_revision +
                endog_3 * fsi_annual_mean +
                as.factor(country), data = debt)
 
-m1_7 <- lm(cum_revision ~ lag_cum_revision + euro_member + 
+m1_5 <- lm(cum_revision ~ lag_cum_revision + general_gov_deficit +
+               central_gov_debt + euro_member +
                as.factor(country), data = debt)
 
-m1_8 <- lm(cum_revision ~ lag_cum_revision + central_gov_debt + 
+m1_6 <- lm(cum_revision ~ lag_cum_revision + general_gov_deficit +
+               central_gov_debt * euro_member +
                as.factor(country), data = debt)
 
-m1_9 <- lm(cum_revision ~ lag_cum_revision + general_gov_deficit +
+m1_7 <- lm(cum_revision ~ lag_cum_revision + euro_member + excessdef +
                as.factor(country), data = debt)
 
-m1_10 <- lm(cum_revision ~ lag_cum_revision + fiscal_trans_gfs +
+m1_8 <- lm(cum_revision ~ lag_cum_revision + euro_member * excessdef +
                as.factor(country), data = debt)
+
+m1_9 <- lm(cum_revision ~ lag_cum_revision + yrcurnt_corrected*fsi_annual_mean + 
+                       excessdef + 
+                       as.factor(country), data = debt)
+
+m1_10 <- lm(cum_revision ~ lag_cum_revision + endog_3*fsi_annual_mean + 
+               excessdef + 
+               as.factor(country), data = debt)
+
+m1_11 <- lm(cum_revision ~ lag_cum_revision + yrcurnt_corrected*excessdef + 
+                fsi_annual_mean +
+                as.factor(country), data = debt)
+
+m1_12 <- lm(cum_revision ~ lag_cum_revision + endog_3*excessdef + 
+                fsi_annual_mean +
+                as.factor(country), data = debt)
 
 ## Drop Greek outlier
 debt_no_greece <- debt %>% filter(country != 'Greece')
 
 m1_no_greece1 <- lm(cum_revision ~ lag_cum_revision +
-                        fsi_annual_mean * yrcurnt_corrected +
+                        fsi_annual_mean * yrcurnt_corrected + excessdef +
                         as.factor(country), data = debt_no_greece)
 
 m1_no_greece2 <- lm(cum_revision ~ lag_cum_revision +
-                        fsi_annual_mean* endog_3 +
+                        fsi_annual_mean* endog_3 + excessdef +
                     as.factor(country), data = debt_no_greece)
 
 # deficit revisions
@@ -139,12 +151,13 @@ m2_10 <- lm(cum_revision ~ lag_cum_revision + fiscal_trans_gfs +
 vars <- c('Cum. Revisions (lag)', 'Election Timing', 'Unscheduled Elect.',
           'Scheduled Elect.',
           'Financial Stress',
-          'Eurozone', 'Cent. Gov. Debt', 'Gen. Gov. Deficit', 'Fiscal Trans.',
+          'Gen. Gov. Deficit', 'Cent. Gov. Debt', 'Euro Member', 'EDP',
           'Elect. Timing*Fin. Stress', 
-          'Unscheduled.Elect*Fin. Stress', 'Scheduled.Elect*Fin. Stress')
+          'Unscheduled.Elect*Fin. Stress', 'Scheduled.Elect*Fin. Stress', 
+          'Cent. Gov. Debt*Euro', 'EDP*Euro', 'Elect. Timing*EDP')
 
 
-stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10,
+stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10, m1_11,
           omit = 'as.factor*', 
           omit.stat = c('f', 'ser'), # so that it fits on the page
           out.header = F,
@@ -158,6 +171,7 @@ stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10,
 
 vars_no_greece <- c('Cum. Revisions (lag)', 'Financial Stress', 
                     'Election Timing', 'Unscheduled Elect.', 'Scheduled Elect.',
+                    'EDP',
                     'Elect. Timing*Fin. Stress', 
                     'Unscheduled Elect*Fin. Stress', 
                     'Scheduled Elect*Fin. Stress')
@@ -190,14 +204,14 @@ stargazer(m2_1, m2_2, m2_3, m2_4, m2_5, m2_6, m2_7, m2_8, m2_9, m2_10,
 
 ## Plot marginal effect -------
 # Election timing and Financial Stress
-fsi_elect_me <- plot_me(m1_8, term1 = 'yrcurnt_corrected', 
+fsi_elect_me <- plot_me(m1_9, term1 = 'yrcurnt_corrected', 
                               term2 = 'fsi_annual_mean',
         fitted2 = seq(0, 0.58, by = 0.05)) +
     xlab('') + 
     ylab('Marginal Effect of Being a Year Closer to an Election\n')
 
 # Election timing and Unscheduled elections
-fsi_scheduled_me <- plot_me(m1_9, term1 = 'endog_3Unscheduled', 
+fsi_scheduled_me <- plot_me(m1_10, term1 = 'endog_3Unscheduled', 
                               term2 = 'fsi_annual_mean',
                               fitted2 = seq(0, 0.58, by = 0.05)) +
     xlab('') + 
@@ -209,25 +223,57 @@ grid.arrange(fsi_elect_me, fsi_scheduled_me, nrow = 1,
              bottom = 'Mean Annual Financial Market Stress')
 dev.off()
 
-## ME for Deficit revisions and scheduled elections
-fsi_election_timing_deficit_me <- plot_me(m2_8, term1 = 'yrcurnt_corrected', 
-        term2 = 'fsi_annual_mean',
-        fitted2 = seq(0, 0.58, by = 0.05)) +
-    xlab('\nAnnual Financial Stress Mean') + 
-    ylab('Marginal Effect of Being a Year Closer to a Scheduled Election\n')
+# Central government debt and euro membership
 
-ggsave(fsi_election_timing_deficit_me, 
-       filename = 'working_paper/figures/fsi_elect_timing_deficit_me.pdf')
+## Reverse order
+m1_6_rev <- lm(cum_revision ~ lag_cum_revision + general_gov_deficit +
+                   euro_member * central_gov_debt +
+               as.factor(country), data = debt)
+
+debt_euro_me <- plot_me(m1_6_rev, term1 = 'euro_member', 
+        term2 = 'central_gov_debt',
+        fitted2 = seq(5, 200, by = 5)) +
+    geom_vline(xintercept = 60, linetype = 'dashed') +
+    scale_x_continuous(breaks = c(0, 60, 100, 150, 200)) +
+    xlab('\nCentral Government Debt/GDP') + 
+    ylab('Marginal Effect of Being a Eurozone Member\n')
+
+# Election timing and EDP
+
+## Reverse order
+m1_11_rev <- lm(cum_revision ~ lag_cum_revision + excessdef * yrcurnt_corrected + 
+                fsi_annual_mean +
+                as.factor(country), data = debt)
+
+timing_edp_me <- plot_me(m1_11_rev, term1 = 'excessdef', 
+                         term2 = 'yrcurnt_corrected',
+                         fitted2 = seq(0, 4, by = 1)) +
+    scale_x_continuous(labels = 4:0) +
+    xlab('\nYears to Election') + 
+    ylab('Marginal Effect of Being in an Excessive Deficit Procedure\n')
+
+pdf(file = 'working_paper/figures/edp_debt_elect_me.pdf', 
+    width = 11, height = 7)
+grid.arrange(debt_euro_me, timing_edp_me, nrow = 1)
+dev.off()
 
 # Election timing and Financial Stress (no Greece)
 # Re run to flip term order
 m1_no_greece1 <- lm(cum_revision ~ lag_cum_revision +
-                        yrcurnt_corrected * fsi_annual_mean +
+                        yrcurnt_corrected * fsi_annual_mean + excessdef +
                         as.factor(country), data = debt_no_greece)
 
 m1_no_greece2 <- lm(cum_revision ~ lag_cum_revision +
-                        endog_3 * fsi_annual_mean +
+                        endog_3 * fsi_annual_mean + excessdef +
                         as.factor(country), data = debt_no_greece)
+
+m1_no_greece3 <- lm(cum_revision ~ lag_cum_revision + general_gov_deficit +
+                   euro_member * central_gov_debt +
+                   as.factor(country), data = debt_no_greece)
+
+m1_no_greece4 <- lm(cum_revision ~ lag_cum_revision + 
+                        excessdef * yrcurnt_corrected + fsi_annual_mean +
+                    as.factor(country), data = debt_no_greece)
 
 fsi_elect_me_nogr <- plot_me(m1_no_greece1, term1 = 'yrcurnt_corrected', 
                              term2 = 'fsi_annual_mean',
@@ -247,6 +293,30 @@ fsi_scheduled_me_nogr <- plot_me(m1_no_greece2, term1 = 'endog_3Unscheduled',
 pdf(file = 'working_paper/figures/debt_me_nogreece.pdf', width = 15)
     grid.arrange(fsi_elect_me_nogr, fsi_scheduled_me_nogr, ncol = 2,
                  bottom = 'Mean Annual Financial Market Stress')
+dev.off()
+
+# Central government debt and euro membership
+
+## Reverse order
+debt_euro_me_nogr <- plot_me(m1_no_greece3, term1 = 'euro_member', 
+                        term2 = 'central_gov_debt',
+                        fitted2 = seq(5, 200, by = 5)) +
+    geom_vline(xintercept = 60, linetype = 'dashed') +
+    scale_x_continuous(breaks = c(0, 60, 100, 150, 200)) +
+    xlab('\nCentral Government Debt/GDP') + 
+    ylab('Marginal Effect of Being a Eurozone Member\n')
+
+# Election timing and EDP
+timing_edp_me_nogr <- plot_me(m1_no_greece4, term1 = 'excessdef', 
+                         term2 = 'yrcurnt_corrected',
+                         fitted2 = seq(0, 4, by = 1)) +
+    scale_x_continuous(labels = 4:0) +
+    xlab('\nYears to Election') + 
+    ylab('Marginal Effect of Being in an Excessive Deficit Procedure\n')
+
+pdf(file = 'working_paper/figures/edp_debt_elect_me_nogr.pdf', 
+    width = 11, height = 7)
+grid.arrange(debt_euro_me_nogr, timing_edp_me_nogr, nrow = 1)
 dev.off()
 
 ## Simulate and plot predicted effects ------------------
