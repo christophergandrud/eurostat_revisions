@@ -178,6 +178,7 @@ stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10, m1_11,
           label = 'debt_results',
           add.lines = list(c('Country FE?', rep('Yes', 9))),
           font.size = 'tiny',
+          star.cutoffs = c(0.05, 0.01, 0.001),
           out = 'working_paper/tables/debt_regressions.tex')
 
 vars_no_greece <- c('Cum. Revisions (lag)', 'Financial Stress', 
@@ -197,6 +198,7 @@ stargazer(m1_no_greece1, m1_no_greece2,
           label = 'debt_no_greece_results',
           add.lines = list(c('Country FE?', rep('Yes', 2))),
           font.size = 'small',
+          star.cutoffs = c(0.05, 0.01, 0.001),
           out = 'working_paper/tables/debt_no_greece_regressions.tex')          
           
 
@@ -210,6 +212,7 @@ stargazer(m2_1, m2_2, m2_3, m2_4, m2_5, m2_6, m2_7, m2_8, m2_9, m2_10, m2_11,
           label = 'deficit_results',
           add.lines = list(c('Country FE?', rep('Yes', 9))),
           font.size = 'tiny',
+          star.cutoffs = c(0.05, 0.01, 0.001),
           out = 'working_paper/tables/deficit_regressions.tex')
 
 
