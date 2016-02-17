@@ -22,6 +22,12 @@ comb$endog_3 <- factor(comb$endog_3,
 
 comb$endog_3 <- relevel(comb$endog_3, ref = 'No election')
 
+comb$excessdef <- factor(comb$excessdef, levels = 0:1,
+                         labels = c('No', 'Yes'))
+
+comb$euro_member <- factor(comb$euro_member, labels = c('No',
+                                                        'Yes'))
+
 # Debt Revision Plots ----------------------------------------
 # Select only debt
 debt <- comb %>% filter(component == 'debt')
@@ -129,4 +135,42 @@ pdf(file = 'working_paper/figures/median_deficit_revisions.pdf',
     width = 11, height = 7)
 grid.arrange(timing_deficit, endog_deficit, nrow = 1, 
         bottom = '\nNumber of Eurostat Revisions Since Original Budget Data was Released')
+dev.off()
+
+
+## Create median revision for being in an EDP
+median_rev_edp <- debt %>% group_by(excessdef, counter) %>%
+    summarise(median_revision = median(cum_revision, na.rm = T))
+
+edp_debt <- ggplot(median_rev_edp, aes(counter, median_revision, 
+                                           group = excessdef, colour = excessdef,
+                                           linetype = excessdef)) +
+    geom_line(size = 1) +
+    scale_linetype(name = 'EDP?') +
+    scale_color_brewer(palette = 'Set2', name = 'EDP?') +
+    scale_x_continuous(breaks = c(1, 3, 5, 7)) +
+    ylab('') +
+    xlab('') +
+    theme_bw()
+
+## Create median revision for Eurozone membership
+median_rev_euro <- debt %>% group_by(euro_member, counter) %>%
+    summarise(median_revision = median(cum_revision, na.rm = T))
+
+euro_debt <- ggplot(median_rev_euro, aes(counter, median_revision, 
+                                       group = euro_member, colour = euro_member,
+                                       linetype = euro_member)) +
+    geom_line(size = 1) +
+    scale_linetype(name = 'Euro?') +
+    scale_color_brewer(palette = 'Set2', name = 'Euro?') +
+    scale_x_continuous(breaks = c(1, 3, 5, 7)) +
+    ylab('') +
+    xlab('') +
+    theme_bw()
+
+
+pdf(file = 'working_paper/figures/median_debt_revisions_edp_euro.pdf', 
+    width = 11, height = 7)
+grid.arrange(edp_debt, euro_debt, nrow = 1, 
+             bottom = '\nNumber of Eurostat Revisions Since Original Budget Data was Released')
 dev.off()
