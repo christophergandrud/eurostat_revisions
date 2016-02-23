@@ -149,6 +149,10 @@ fiscal_trans <- fiscal_trans %>% gather(year, fiscal_trans_gfs,
 edp <- import('data_cleaning/raw/edp_updated.csv')
 edp <- edp %>% rename(year = actualyear)
 
+## Fiscal contracts (from Hallerberg) --------------
+contracts <- import('data_cleaning/raw/fiscal_contracts/combined_fiscal.csv')
+
+
 
 ## Combine ------
 comb <- merge(timing, revisions, by = c('country', 'year'))
@@ -159,6 +163,7 @@ comb <- merge(comb, deficit_debt, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, euro, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, fiscal_trans, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, edp, by = c('country', 'year'), all.x = T)
+comb <- merge(comb, contracts, by = c('country', 'year'), all.x = T)
 
 
 comb$euro_member[is.na(comb$euro_member)] <- 0

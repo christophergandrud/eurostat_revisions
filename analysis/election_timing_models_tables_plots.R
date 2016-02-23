@@ -16,8 +16,7 @@ library(DataCombine)
 setwd('/git_repositories/eurostat_revisions/')
 
 # Load plot function
-devtools::source_gist('d270ff55c2ca26286e90')
-source('~/Desktop/plot_me.R')
+source('analysis/functions/plot_me.R')
 
 # Function to reverse the direction of the election timing variable
 reverser <- function(x) max(x, na.rm = T) - x
