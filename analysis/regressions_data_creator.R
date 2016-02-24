@@ -5,6 +5,7 @@
 # ---------------------------------------------------------------------------- #
 
 library(rio)
+library(foreign)
 library(dplyr)
 library(lubridate)
 library(countrycode)
@@ -152,6 +153,15 @@ edp <- edp %>% rename(year = actualyear)
 ## Fiscal contracts (from Hallerberg) --------------
 contracts <- import('data_cleaning/raw/fiscal_contracts/combined_fiscal.csv')
 
+## Independent National Debt Rule Monitor  (Bova et al. 2015) -----------
+independent <- read.dta('data_cleaning/raw/fiscal_rule_database11.dta') %>%
+    filter(region == 2) %>% 
+    # select observations where there is a independent national institution monitoring the debt rule
+    filter(monitor_n_DR == 1 & monitor_s_DR == 1) %>%
+    select(Country, year, monitor_n_DR) %>% rename(country = Country)
+
+independent$country <- countrycode(independent$country, origin = "country.name",
+                                   destination = 'country.name')
 
 
 ## Combine ------
@@ -164,12 +174,17 @@ comb <- merge(comb, euro, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, fiscal_trans, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, edp, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, contracts, by = c('country', 'year'), all.x = T)
+comb <- merge(comb, independent, by = c('country', 'year'), all.x = T)
 
-
+# Fill in 0 for NAs in euro membership
 comb$euro_member[is.na(comb$euro_member)] <- 0
+
+# Fill in 0 for NAs in countries without national debt monitor
+comb$monitor_n_DR[is.na(comb$monitor_n_DR)] <- 0
+
 comb <- comb %>% arrange(country, year, version)
 
-# Reinsert Euroarea exchange rate
+# Re-insert Euroarea exchange rate
 comb <- FillIn(comb, euro_exchange, Var1 = 'exchange_usd', KeyVar = 'year')
 
 # Final clean up
