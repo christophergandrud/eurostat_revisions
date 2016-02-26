@@ -80,24 +80,55 @@ endog_election$endog_3[endog_election$endog_predHW == 0 &
 FindDups(endog_election, c('country', 'year'))
 
 ## Debt figures from the World Bank Development Indicators ----
-debt_raw <- WDI(indicator = c('GC.DOD.TOTL.GD.ZS', 'PA.NUS.FCRF', 
-                              'NY.GDP.MKTP.KD.ZG'), 
+cent_debt_raw <- WDI(indicator = c('GC.DOD.TOTL.GD.ZS', 'PA.NUS.FCRF', 
+                              'NY.GDP.MKTP.KD.ZG', 'AG.LND.ARBL.ZS'), 
                 start = 2000, end = 2015)
 
-debt_raw <- debt_raw %>% select(country, year, GC.DOD.TOTL.GD.ZS, PA.NUS.FCRF,
+cent_debt_raw <- cent_debt_raw %>% select(country, year, GC.DOD.TOTL.GD.ZS, PA.NUS.FCRF,
                                 NY.GDP.MKTP.KD.ZG) %>%
     rename(central_gov_debt = GC.DOD.TOTL.GD.ZS) %>%
     rename(exchange_usd = PA.NUS.FCRF) %>%
     rename(gdp_growth = NY.GDP.MKTP.KD.ZG)
 
 # Extract euro exchange rate and place it in for euro countries
-euro_exchange <- debt_raw %>% filter(country == 'Euro area') %>% 
+euro_exchange <- cent_debt_raw %>% filter(country == 'Euro area') %>% 
     select(year, exchange_usd)
 
-debt_raw$country <- countrycode(debt_raw$country, origin = 'country.name',
+cent_debt_raw$country <- countrycode(cent_debt_raw$country, origin = 'country.name',
                                 destination = 'country.name')
 
-## Deficit ------
+## Eurostat General Government Debt ------
+# Downloaded from: http://ec.europa.eu/eurostat/en/web/products-datasets/-/TSDDE410
+# 25 February 2016
+
+gen_debt_raw <- import('data_cleaning/raw/tsdde410.tsv', header = T, 
+                      na.strings = ':')
+
+split <- str_split_fixed(gen_debt_raw[, 1], pattern = ',', n = 2) %>% 
+    as.data.frame
+
+gen_debt_raw <- cbind(split, gen_debt_raw[, 2:(ncol(gen_debt_raw))])
+gen_debt_raw <- gen_debt_raw %>% filter(V1 == 'PC_GDP') %>% select(-V1)
+
+gen_debt_raw <- gen_debt_raw %>% gather(year, gen_gov_debt, 
+                                      2:ncol(gen_debt_raw))
+
+for (i in 1:2) gen_debt_raw[, i] <- as.character(gen_debt_raw[, i])
+for (i in 2:ncol(gen_debt_raw)) gen_debt_raw[, i] <- as.numeric(gen_debt_raw[, i])
+
+gen_debt_raw$V2[gen_debt_raw$V2 == 'UK'] <- 'GB'
+gen_debt_raw$V2[gen_debt_raw$V2 == 'EL'] <- 'GR'
+gen_debt_raw$country <- countrycode(gen_debt_raw$V2, origin = 'iso2c',
+                                   destination = 'country.name')
+gen_debt_raw <- gen_debt_raw %>% DropNA('country')
+
+gen_debt_raw <- gen_debt_raw %>% select(country, year, gen_gov_debt) %>%
+    arrange(country, year)
+
+debt_debt <- merge(cent_debt_raw, gen_debt_raw, by = c('country', 'year'), 
+                      all = T)
+
+## Eurostat General Government Deficit ------
 # Downloaded from: http://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&language=en&pcode=teina200&plugin=1
 # 3 December 2015
 
@@ -117,6 +148,7 @@ for (i in 1:2) deficit_raw[, i] <- as.character(deficit_raw[, i])
 for (i in 2:ncol(deficit_raw)) deficit_raw[, i] <- as.numeric(deficit_raw[, i])
 
 deficit_raw$V2[deficit_raw$V2 == 'UK'] <- 'GB'
+deficit_raw$V2[deficit_raw$V2 == 'EL'] <- 'GR'
 deficit_raw$country <- countrycode(deficit_raw$V2, origin = 'iso2c',
                                    destination = 'country.name')
 deficit_raw <- deficit_raw %>% DropNA('country')
@@ -124,8 +156,8 @@ deficit_raw <- deficit_raw %>% DropNA('country')
 deficit_raw <- deficit_raw %>% select(country, year, general_gov_deficit) %>%
     arrange(country, year)
 
-deficit_debt <- merge(deficit_raw, debt_raw, by = c('country', 'year'), 
-                      all.x = T)
+deficit_debt <- merge(debt_debt, deficit_raw, by = c('country', 'year'), 
+                      all = T)
 
 ## Eurozone member ---------------
 euro <- import('https://raw.githubusercontent.com/christophergandrud/euro_membership/master/data/euro_membership_data.csv')
@@ -187,12 +219,24 @@ comb <- comb %>% arrange(country, year, version)
 # Re-insert Euroarea exchange rate
 comb <- FillIn(comb, euro_exchange, Var1 = 'exchange_usd', KeyVar = 'year')
 
+# Fill in missing contracts and delegation years, assuming no change
+comb <- comb %>% group_by(country) %>% 
+    mutate(contracts = FillDown(Var = contracts))
+
+comb <- comb %>% group_by(country) %>% 
+    mutate(delegation = FillDown(Var = delegation))
+
+comb <- comb %>% group_by(country) %>% 
+    mutate(expcontracts = FillDown(Var = expcontracts))
+
 # Final clean up
 comb <- MoveFront(comb, c('year', 'country', 'iso2c'))
 comb$iso2c <- countrycode(comb$country, origin = 'country.name', 
                           destination = 'iso2c')
 
 comb <- comb %>% arrange(country, year, version, component)
+
+comb <- comb %>% MoveFront('country')
 
 ## Saved merged data ------
 export(comb, 'data_cleaning/main_merged.csv')
