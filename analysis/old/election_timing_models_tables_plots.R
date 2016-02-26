@@ -226,14 +226,14 @@ stargazer(m2_1, m2_2, m2_3, m2_4, m2_5, m2_6, m2_7, m2_8, m2_9, m2_10, m2_11,
 
 ## Plot marginal effect -------
 # Election timing and Financial Stress
-fsi_elect_me <- plot_me(m1_9, term1 = 'yrcurnt_corrected', 
+fsi_elect_me <- plot_me(m1_4, term1 = 'yrcurnt_corrected', 
                               term2 = 'fsi_annual_mean',
         fitted2 = seq(0, 0.58, by = 0.05)) +
     xlab('') + 
     ylab('Marginal Effect of Being a Year Closer to an Election\n')
 
 # Election timing and Unscheduled elections
-fsi_scheduled_me <- plot_me(m1_10, term1 = 'endog_3Unscheduled', 
+fsi_scheduled_me <- plot_me(m1_6, term1 = 'endog_3Unscheduled', 
                               term2 = 'fsi_annual_mean',
                               fitted2 = seq(0, 0.58, by = 0.05)) +
     xlab('') + 

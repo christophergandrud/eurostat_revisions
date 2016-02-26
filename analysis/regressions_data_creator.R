@@ -77,6 +77,16 @@ endog_election$endog_3[endog_election$endog_predHW == 1] <- 2
 endog_election$endog_3[endog_election$endog_predHW == 0 & 
                            endog_election$endog_electionHW == 0] <- 3
 
+endog_election <- endog_election %>% select(country, year, endog_3)
+
+# Add Gandrud updates based on http://www.nsd.uib.no/european_election_database
+# and Wikipedia
+
+endog_gandrud <- import('data_cleaning/raw/endog_gandrud.csv')
+
+endog_election <- rbind_all(list(endog_election, endog_gandrud))
+endog_election <- endog_election %>% arrange(country, year)
+
 FindDups(endog_election, c('country', 'year'))
 
 ## Debt figures from the World Bank Development Indicators ----

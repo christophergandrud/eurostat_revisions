@@ -21,6 +21,37 @@ edp$country <- countrycode(edp$country, origin = 'country.name',
 
 edp <- edp %>% arrange(country, actualyear)
 
+# New members early EDP update
+new_m_update <- data.frame(
+                    country = c(
+                        rep('Cyprus', 2),
+                        rep('Czech Republic', 2),
+                        rep('Estonia', 2), 
+                        rep('Hungary', 2),
+                        rep('Latvia', 2),
+                        rep('Lithuania', 2),
+                        rep('Malta', 2),
+                        rep('Poland', 2),
+                        rep('Slovakia', 2),
+                        rep('Slovenia', 2)
+                    ),
+                    actualyear = c(
+                        rep(2004:2005, 10)
+                    ),
+                    excessdef = c(
+                        0, 0,
+                        1, 0,
+                        0, 0,
+                        1, 1,
+                        0, 0,
+                        0, 0,
+                        1, 0,
+                        1, 0,
+                        1, 0,
+                        0, 0
+                    )
+)
+
 # Update from 2013 through 2015
 update <- data.frame(
             country = c(
@@ -90,8 +121,8 @@ update$country <- countrycode(update$country, origin = 'country.name',
                            destination = 'country.name')
 
 # Combine update and original
-edp <- rbind(edp, update)
-edp <- edp %>% arrange(country, actualyear)
+edp <- rbind(new_m_update, edp, update)
+edp <- edp %>% arrange(as.character(country), actualyear)
 
 # Save
 export(edp, file = 'raw/edp_updated.csv')
