@@ -209,7 +209,8 @@ independent$country <- countrycode(independent$country, origin = "country.name",
 ## Combine ------
 comb <- merge(timing, revisions, by = c('country', 'year'))
 comb <- merge(comb, fsi, by = c('country', 'year'), all.x = T)
-comb <- merge(comb, finstress_yr_mean, by = c('country', 'year'), all.x = T)
+comb <- merge(comb, finstress_yr_mean, by = c('country', 'year'), 
+              all.x = T)
 comb <- merge(comb, endog_election, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, deficit_debt, by = c('country', 'year'), all.x = T)
 comb <- merge(comb, euro, by = c('country', 'year'), all.x = T)

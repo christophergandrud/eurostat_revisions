@@ -124,5 +124,7 @@ update$country <- countrycode(update$country, origin = 'country.name',
 edp <- rbind(new_m_update, edp, update)
 edp <- edp %>% arrange(as.character(country), actualyear)
 
+FindDups(edp, c('country', 'actualyear'))
+
 # Save
 export(edp, file = 'raw/edp_updated.csv')

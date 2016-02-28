@@ -15,10 +15,7 @@
 "Austria",2011,1
 "Austria",2012,1
 "Austria",2013,1
-"Austria",2013,1
 "Austria",2014,1
-"Austria",2014,1
-"Austria",2015,0
 "Austria",2015,0
 "Belgium",1998,0
 "Belgium",1999,0
@@ -36,10 +33,7 @@
 "Belgium",2011,1
 "Belgium",2012,1
 "Belgium",2013,1
-"Belgium",2013,1
 "Belgium",2014,1
-"Belgium",2014,1
-"Belgium",2015,0
 "Belgium",2015,0
 "Bulgaria",2007,0
 "Bulgaria",2008,0
@@ -48,20 +42,12 @@
 "Bulgaria",2011,1
 "Bulgaria",2012,0
 "Bulgaria",2013,0
-"Bulgaria",2013,0
-"Bulgaria",2014,0
 "Bulgaria",2014,0
 "Bulgaria",2015,0
-"Bulgaria",2015,0
-"Croatia",2013,1
 "Croatia",2013,1
 "Croatia",2014,1
-"Croatia",2014,1
-"Croatia",2015,1
 "Croatia",2015,1
 "Cyprus",2004,0
-"Cyprus",2004,0
-"Cyprus",2005,0
 "Cyprus",2005,0
 "Cyprus",2006,0
 "Cyprus",2007,0
@@ -71,14 +57,9 @@
 "Cyprus",2011,1
 "Cyprus",2012,0
 "Cyprus",2013,1
-"Cyprus",2013,1
-"Cyprus",2014,1
 "Cyprus",2014,1
 "Cyprus",2015,1
-"Cyprus",2015,1
 "Czech Republic",2004,1
-"Czech Republic",2004,1
-"Czech Republic",2005,0
 "Czech Republic",2005,0
 "Czech Republic",2006,0
 "Czech Republic",2007,0
@@ -88,10 +69,7 @@
 "Czech Republic",2011,1
 "Czech Republic",2012,1
 "Czech Republic",2013,1
-"Czech Republic",2013,1
 "Czech Republic",2014,1
-"Czech Republic",2014,1
-"Czech Republic",2015,0
 "Czech Republic",2015,0
 "Denmark",1998,0
 "Denmark",1999,0
@@ -109,14 +87,9 @@
 "Denmark",2011,1
 "Denmark",2012,1
 "Denmark",2013,1
-"Denmark",2013,1
-"Denmark",2014,1
 "Denmark",2014,1
 "Denmark",2015,0
-"Denmark",2015,0
 "Estonia",2004,0
-"Estonia",2004,0
-"Estonia",2005,0
 "Estonia",2005,0
 "Estonia",2006,NA
 "Estonia",2007,NA
@@ -126,10 +99,7 @@
 "Estonia",2011,0
 "Estonia",2012,0
 "Estonia",2013,0
-"Estonia",2013,0
 "Estonia",2014,0
-"Estonia",2014,0
-"Estonia",2015,0
 "Estonia",2015,0
 "Finland",1998,0
 "Finland",1999,0
@@ -147,10 +117,7 @@
 "Finland",2011,0
 "Finland",2012,0
 "Finland",2013,1
-"Finland",2013,1
 "Finland",2014,0
-"Finland",2014,0
-"Finland",2015,0
 "Finland",2015,0
 "France",1998,0
 "France",1999,0
@@ -168,10 +135,7 @@
 "France",2011,1
 "France",2012,1
 "France",2013,1
-"France",2013,1
 "France",2014,1
-"France",2014,1
-"France",2015,1
 "France",2015,1
 "Germany",1998,0
 "Germany",1999,0
@@ -189,10 +153,7 @@
 "Germany",2011,0
 "Germany",2012,0
 "Germany",2013,0
-"Germany",2013,0
 "Germany",2014,0
-"Germany",2014,0
-"Germany",2015,0
 "Germany",2015,0
 "Greece",1998,0
 "Greece",1999,0
@@ -210,14 +171,9 @@
 "Greece",2011,1
 "Greece",2012,0
 "Greece",2013,1
-"Greece",2013,1
-"Greece",2014,1
 "Greece",2014,1
 "Greece",2015,1
-"Greece",2015,1
 "Hungary",2004,1
-"Hungary",2004,1
-"Hungary",2005,1
 "Hungary",2005,1
 "Hungary",2006,1
 "Hungary",2007,1
@@ -227,10 +183,7 @@
 "Hungary",2011,1
 "Hungary",2012,0
 "Hungary",2013,1
-"Hungary",2013,1
 "Hungary",2014,0
-"Hungary",2014,0
-"Hungary",2015,0
 "Hungary",2015,0
 "Ireland",1998,0
 "Ireland",1999,0
@@ -248,10 +201,7 @@
 "Ireland",2011,1
 "Ireland",2012,0
 "Ireland",2013,1
-"Ireland",2013,1
 "Ireland",2014,1
-"Ireland",2014,1
-"Ireland",2015,1
 "Ireland",2015,1
 "Italy",1998,0
 "Italy",1999,0
@@ -269,14 +219,9 @@
 "Italy",2011,1
 "Italy",2012,0
 "Italy",2013,1
-"Italy",2013,1
-"Italy",2014,0
 "Italy",2014,0
 "Italy",2015,0
-"Italy",2015,0
 "Latvia",2004,0
-"Latvia",2004,0
-"Latvia",2005,0
 "Latvia",2005,0
 "Latvia",2006,0
 "Latvia",2007,0
@@ -286,14 +231,9 @@
 "Latvia",2011,1
 "Latvia",2012,0
 "Latvia",2013,1
-"Latvia",2013,1
-"Latvia",2014,0
 "Latvia",2014,0
 "Latvia",2015,0
-"Latvia",2015,0
 "Lithuania",2004,0
-"Lithuania",2004,0
-"Lithuania",2005,0
 "Lithuania",2005,0
 "Lithuania",2006,0
 "Lithuania",2007,0
@@ -303,10 +243,7 @@
 "Lithuania",2011,1
 "Lithuania",2012,0
 "Lithuania",2013,1
-"Lithuania",2013,1
 "Lithuania",2014,0
-"Lithuania",2014,0
-"Lithuania",2015,0
 "Lithuania",2015,0
 "Luxembourg",1998,0
 "Luxembourg",1999,0
@@ -324,14 +261,9 @@
 "Luxembourg",2011,0
 "Luxembourg",2012,0
 "Luxembourg",2013,0
-"Luxembourg",2013,0
-"Luxembourg",2014,0
 "Luxembourg",2014,0
 "Luxembourg",2015,0
-"Luxembourg",2015,0
 "Malta",2004,1
-"Malta",2004,1
-"Malta",2005,0
 "Malta",2005,0
 "Malta",2006,0
 "Malta",2007,0
@@ -341,10 +273,7 @@
 "Malta",2011,0
 "Malta",2012,0
 "Malta",2013,1
-"Malta",2013,1
 "Malta",2014,1
-"Malta",2014,1
-"Malta",2015,1
 "Malta",2015,1
 "Netherlands",1998,0
 "Netherlands",1999,0
@@ -362,14 +291,9 @@
 "Netherlands",2011,1
 "Netherlands",2012,1
 "Netherlands",2013,1
-"Netherlands",2013,1
-"Netherlands",2014,1
 "Netherlands",2014,1
 "Netherlands",2015,0
-"Netherlands",2015,0
 "Poland",2004,1
-"Poland",2004,1
-"Poland",2005,0
 "Poland",2005,0
 "Poland",2006,1
 "Poland",2007,1
@@ -379,10 +303,7 @@
 "Poland",2011,1
 "Poland",2012,1
 "Poland",2013,1
-"Poland",2013,1
 "Poland",2014,1
-"Poland",2014,1
-"Poland",2015,1
 "Poland",2015,1
 "Portugal",1998,0
 "Portugal",1999,0
@@ -400,10 +321,7 @@
 "Portugal",2011,1
 "Portugal",2012,0
 "Portugal",2013,1
-"Portugal",2013,1
 "Portugal",2014,1
-"Portugal",2014,1
-"Portugal",2015,1
 "Portugal",2015,1
 "Romania",2007,0
 "Romania",2008,0
@@ -412,14 +330,9 @@
 "Romania",2011,1
 "Romania",2012,0
 "Romania",2013,1
-"Romania",2013,1
-"Romania",2014,0
 "Romania",2014,0
 "Romania",2015,0
-"Romania",2015,0
 "Slovakia",2004,1
-"Slovakia",2004,1
-"Slovakia",2005,0
 "Slovakia",2005,0
 "Slovakia",2006,1
 "Slovakia",2007,1
@@ -429,14 +342,9 @@
 "Slovakia",2011,1
 "Slovakia",2012,1
 "Slovakia",2013,1
-"Slovakia",2013,1
-"Slovakia",2014,1
 "Slovakia",2014,1
 "Slovakia",2015,0
-"Slovakia",2015,0
 "Slovenia",2004,0
-"Slovenia",2004,0
-"Slovenia",2005,0
 "Slovenia",2005,0
 "Slovenia",2006,0
 "Slovenia",2007,0
@@ -446,10 +354,7 @@
 "Slovenia",2011,1
 "Slovenia",2012,1
 "Slovenia",2013,1
-"Slovenia",2013,1
 "Slovenia",2014,1
-"Slovenia",2014,1
-"Slovenia",2015,1
 "Slovenia",2015,1
 "Spain",1998,0
 "Spain",1999,0
@@ -467,10 +372,7 @@
 "Spain",2011,1
 "Spain",2012,1
 "Spain",2013,1
-"Spain",2013,1
 "Spain",2014,1
-"Spain",2014,1
-"Spain",2015,1
 "Spain",2015,1
 "Sweden",1998,0
 "Sweden",1999,0
@@ -488,10 +390,7 @@
 "Sweden",2011,0
 "Sweden",2012,0
 "Sweden",2013,0
-"Sweden",2013,0
 "Sweden",2014,0
-"Sweden",2014,0
-"Sweden",2015,0
 "Sweden",2015,0
 "United Kingdom",1998,0
 "United Kingdom",1999,0
@@ -509,8 +408,5 @@
 "United Kingdom",2011,1
 "United Kingdom",2012,1
 "United Kingdom",2013,1
-"United Kingdom",2013,1
 "United Kingdom",2014,1
-"United Kingdom",2014,1
-"United Kingdom",2015,1
 "United Kingdom",2015,1

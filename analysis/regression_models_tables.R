@@ -43,7 +43,7 @@ comb$yrcurnt_corrected <- reverser(comb$yrcurnt_corrected)
 ## Estimate models 
 # debt revisions ---------
 debt <- comb %>% filter(component == 'debt')
-debt <- FindDups(debt, c('country', 'year', 'version'), NotDups = T)
+FindDups(debt, c('country', 'year', 'version'))
 
 # Create debt lag
 debt <- slide(debt, Var = 'cum_revision', TimeVar = 'version', 
@@ -92,13 +92,13 @@ m1_7 <- lm(cum_revision ~ lag_cum_revision +
            data = debt)
 
 m1_8 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef * contracts + 
+               central_gov_debt * contracts + 
                as.factor(country),
            data = debt)
 
 
 m1_9 <- lm(cum_revision ~ lag_cum_revision + 
-                excessdef * contracts +
+                central_gov_debt * contracts +
                 yrcurnt_corrected * fsi_annual_mean + 
                 as.factor(country),
             data = debt)
@@ -149,13 +149,13 @@ m_no_g3 <- lm(cum_revision ~ lag_cum_revision +
            data = debt_no_greece)
 
 m_no_g4 <- lm(cum_revision ~ lag_cum_revision + 
-               gen_gov_debt  + 
+               excessdef  + 
                yrcurnt_corrected * fsi_annual_mean +
                as.factor(country),
            data = debt_no_greece)
 
 m_no_g6 <- lm(cum_revision ~ lag_cum_revision + 
-               gen_gov_debt + 
+               excessdef + 
                endog_3 + fsi_annual_mean +
                as.factor(country),
            data = debt_no_greece)
@@ -178,14 +178,7 @@ m_no_g9 <- lm(cum_revision ~ lag_cum_revision +
            data = debt_no_greece)
 
 m_no_g10 <- lm(cum_revision ~ lag_cum_revision + 
-                excessdef + gen_gov_debt * contracts +
-                as.factor(country),
-            data = debt_no_greece)
-
-
-m_no_g11 <- lm(cum_revision ~ lag_cum_revision + 
-                excessdef  * contracts +
-                yrcurnt_corrected * fsi_annual_mean + 
+                excessdef + central_gov_debt * contracts +
                 as.factor(country),
             data = debt_no_greece)
 
