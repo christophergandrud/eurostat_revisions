@@ -57,47 +57,58 @@ m1_1 <- lm(cum_revision ~ lag_cum_revision +
              data = debt)
 
 m1_2 <- lm(cum_revision ~ lag_cum_revision + 
-               gen_gov_debt + euro_member +
+               central_gov_debt + euro_member +
                as.factor(country),
            data = debt)
 
 m1_3 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef + 
-               yrcurnt_corrected + fsi_annual_mean +
+               central_gov_debt * euro_member +
                as.factor(country),
            data = debt)
 
 m1_4 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef + 
-               yrcurnt_corrected * fsi_annual_mean +
+               central_gov_debt + 
+               yrcurnt_corrected + fsi_annual_mean +
                as.factor(country),
            data = debt)
 
 m1_5 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef + 
-               endog_3 + fsi_annual_mean +
+               excessdef * 
+               yrcurnt_corrected + fsi_annual_mean +
                as.factor(country),
            data = debt)
 
 m1_6 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef + 
-               endog_3 * fsi_annual_mean +
+               central_gov_debt + 
+               yrcurnt_corrected * fsi_annual_mean +
                as.factor(country),
            data = debt)
 
 m1_7 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef + 
-               contracts +
+               central_gov_debt + 
+               endog_3 + fsi_annual_mean +
                as.factor(country),
            data = debt)
 
 m1_8 <- lm(cum_revision ~ lag_cum_revision + 
+               central_gov_debt + 
+               endog_3 * fsi_annual_mean +
+               as.factor(country),
+           data = debt)
+
+m1_9 <- lm(cum_revision ~ lag_cum_revision + 
+               central_gov_debt + 
+               contracts +
+               as.factor(country),
+           data = debt)
+
+m1_10 <- lm(cum_revision ~ lag_cum_revision + 
                central_gov_debt * contracts + 
                as.factor(country),
            data = debt)
 
 
-m1_9 <- lm(cum_revision ~ lag_cum_revision + 
+m1_11 <- lm(cum_revision ~ lag_cum_revision + 
                 central_gov_debt * contracts +
                 yrcurnt_corrected * fsi_annual_mean + 
                 as.factor(country),
@@ -105,15 +116,17 @@ m1_9 <- lm(cum_revision ~ lag_cum_revision +
 
 
 # Create output table
-var_labels_1 <- c('Cum Revisions (lag)', 'EDP', 'Revised Gen. Debt', 'Euro Member',
-                'Election Timing', 'Unscheduled Elect.', 'Scheduled Elect.',
-                'Financial Stress', 'Contracts', 
-                'Elect. Timing * Fin. Stress',
-                'Unscheduled Elect. * Fin. Stress', 
-                'Scheduled Elect. * Fin. Stress', 'EDP * Contracts')
+var_labels_1 <- c('Cum Revisions (lag)', 'EDP', 'Revised Cent. Gov. Debt', 
+                  'Euro Member',
+                  'Election Timing', 'Unscheduled Elect.', 'Scheduled Elect.',
+                  'Financial Stress', 'Contracts', 
+                  'Debt * Euro', 'EDP * Election Timing',
+                  'Elect. Timing * Fin. Stress',
+                  'Unscheduled Elect. * Fin. Stress', 
+                  'Scheduled Elect. * Fin. Stress', 'Debt * Contracts')
 
 
-stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9,
+stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10, m1_11,
           omit = 'as.factor*', 
           omit.stat = c('f', 'ser'), # so that it fits on the page
           out.header = F,
@@ -132,62 +145,75 @@ stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9,
 ## Drop Greek outlier -------
 debt_no_greece <- debt %>% filter(country != 'Greece')
 
+# Debt Models
 m_no_g1 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef + central_gov_debt + euro_member +
+               excessdef + euro_member +
                as.factor(country),
            data = debt_no_greece)
 
 m_no_g2 <- lm(cum_revision ~ lag_cum_revision + 
-               gen_gov_debt * euro_member + 
-               as.factor(country),
-           data = debt_no_greece)
+                  excessdef * euro_member +
+                  as.factor(country),
+              data = debt_no_greece)
 
 m_no_g3 <- lm(cum_revision ~ lag_cum_revision + 
-               gen_gov_debt + 
-               yrcurnt_corrected + fsi_annual_mean +
+               central_gov_debt + euro_member +
                as.factor(country),
            data = debt_no_greece)
 
 m_no_g4 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef  + 
+               central_gov_debt * euro_member +
+               as.factor(country),
+           data = debt_no_greece)
+
+m_no_g5 <- lm(cum_revision ~ lag_cum_revision + 
+               central_gov_debt + 
+               yrcurnt_corrected + fsi_annual_mean +
+               as.factor(country),
+           data =debt_no_greece)
+
+m_no_g6 <- lm(cum_revision ~ lag_cum_revision + 
+               central_gov_debt + 
                yrcurnt_corrected * fsi_annual_mean +
                as.factor(country),
            data = debt_no_greece)
 
-m_no_g6 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef + 
-               endog_3 + fsi_annual_mean +
-               as.factor(country),
-           data = debt_no_greece)
-
 m_no_g7 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef + 
-               endog_3 * fsi_annual_mean +
+               excessdef * 
+               yrcurnt_corrected + fsi_annual_mean +
                as.factor(country),
            data = debt_no_greece)
 
 m_no_g8 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef + gen_gov_debt + 
-               contracts +
+               central_gov_debt + 
+               endog_3 + fsi_annual_mean +
                as.factor(country),
            data = debt_no_greece)
 
 m_no_g9 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef * contracts + gen_gov_debt +
+               central_gov_debt + 
+               endog_3 * fsi_annual_mean +
                as.factor(country),
            data = debt_no_greece)
 
 m_no_g10 <- lm(cum_revision ~ lag_cum_revision + 
-                excessdef + central_gov_debt * contracts +
+               central_gov_debt + 
+               contracts +
+               as.factor(country),
+           data = debt_no_greece)
+
+m_no_g11 <- lm(cum_revision ~ lag_cum_revision + 
+                central_gov_debt * contracts + 
                 as.factor(country),
             data = debt_no_greece)
 
-var_labels_1 <- c('Cum Revisions (lag)', 'EDP', 'Revised Gen. Debt', 'Euro Member',
+var_labels_2 <- c('Cum Revisions (lag)', 'EDP', 'Revised Cent.Gov. Debt', 
+                  'Euro Member',
                   'Election Timing', 'Unscheduled Elect.', 'Scheduled Elect.',
-                  'Financial Stress', 'Contracts', 
-                  'Elect. Timing * Fin. Stress',
+                  'Financial Stress', 'Contracts', 'EDP * Euro', 'Debt * Euro',
+                  'Elect. Timing * Fin. Stress', 'EDP * Election Timing',
                   'Unscheduled Elect. * Fin. Stress', 
-                  'Scheduled Elect. * Fin. Stress', 'EDP * Contracts')
+                  'Scheduled Elect. * Fin. Stress', 'Debt * Contracts')
 
 
 # Create output table
@@ -198,8 +224,128 @@ stargazer(m_no_g1, m_no_g2, m_no_g3, m_no_g4, m_no_g5, m_no_g6, m_no_g7,
           out.header = F,
           #add.lines = list(c('Country FE?', rep('Yes', 9))),
           dep.var.labels = 'Cumulative Debt Revisions',
-          covariate.labels = var_labels,
+          label = 'results_no_greece',
+          covariate.labels = var_labels_2,
           star.cutoffs = c(0.05, 0.01, 0.001),
-          #start.character = c('✝', '*', '**'),
+          title = 'Linear Regression Estimation of Debt Revisions (Excluding Greece)',
           add.lines = list(c('Country FE?', rep('Yes', 11))),
-          type = 'text')
+          font.size = 'tiny',
+          out = 'working_paper/tables/debt_regressions_no_greece.tex')
+
+
+## Stress and selection into elections --------
+no_dups <- comb %>% FindDups(comb, Vars = c('country', 'year'), NotDups = T)
+
+no_dups$unsched <- 0
+no_dups$unsched[no_dups$endog_3 == 'Unscheduled'] <- 1
+
+logit_endog <- glm(unsched ~ fsi_annual_mean + as.factor(country), 
+                   data = no_dups)
+
+stargazer(logit_endog, omit = 'as.factor*',
+          covariate.labels = 'Financial Stress',
+          out.header = F,
+          title = 'Logistic Regression Estimation of Having an Unscheduled Election',
+          dep.var.labels = 'Unscheduled Election',
+          label = 'finstress_endog',
+          add.lines = list(c('Country FE?', 'Yes')),
+          out = 'working_paper/tables/fsi_predict_endog.tex')
+
+
+# deficit revisions ---------
+deficit <- comb %>% filter(component == 'deficit')
+FindDups(deficit, c('country', 'year', 'version'))
+
+# Create debt lag
+deficit <- slide(deficit, Var = 'cum_revision', TimeVar = 'version', 
+              GroupVar = 'country', NewVar = 'lag_cum_revision',
+              slideBy = -1)
+
+# Debt Models
+m2_1 <- lm(cum_revision ~ lag_cum_revision + 
+               excessdef + euro_member +
+               as.factor(country),
+           data = deficit)
+
+m2_2 <- lm(cum_revision ~ lag_cum_revision + 
+               general_gov_deficit + euro_member +
+               as.factor(country),
+           data = deficit)
+
+m2_3 <- lm(cum_revision ~ lag_cum_revision + 
+               general_gov_deficit * euro_member +
+               as.factor(country),
+           data = deficit)
+
+m2_4 <- lm(cum_revision ~ lag_cum_revision + 
+               general_gov_deficit + 
+               yrcurnt_corrected + fsi_annual_mean +
+               as.factor(country),
+           data = deficit)
+
+m2_5 <- lm(cum_revision ~ lag_cum_revision + 
+               excessdef * 
+               yrcurnt_corrected + fsi_annual_mean +
+               as.factor(country),
+           data = deficit)
+
+m2_6 <- lm(cum_revision ~ lag_cum_revision + 
+               general_gov_deficit + 
+               yrcurnt_corrected * fsi_annual_mean +
+               as.factor(country),
+           data = deficit)
+
+m2_7 <- lm(cum_revision ~ lag_cum_revision + 
+               general_gov_deficit + 
+               endog_3 + fsi_annual_mean +
+               as.factor(country),
+           data = deficit)
+
+m2_8 <- lm(cum_revision ~ lag_cum_revision + 
+               general_gov_deficit + 
+               endog_3 * fsi_annual_mean +
+               as.factor(country),
+           data = deficit)
+
+m2_9 <- lm(cum_revision ~ lag_cum_revision + 
+               general_gov_deficit + 
+               contracts +
+               as.factor(country),
+           data = deficit)
+
+m2_10 <- lm(cum_revision ~ lag_cum_revision + 
+                general_gov_deficit * contracts + 
+                as.factor(country),
+            data = deficit)
+
+
+m2_11 <- lm(cum_revision ~ lag_cum_revision + 
+                general_gov_deficit * contracts +
+                yrcurnt_corrected * fsi_annual_mean + 
+                as.factor(country),
+            data = deficit)
+
+# Create output table
+var_labels_1 <- c('Cum Revisions (lag)', 'EDP', 'Revised Gen. Gov. Deficit', 
+                  'Euro Member',
+                  'Election Timing', 'Unscheduled Elect.', 'Scheduled Elect.',
+                  'Financial Stress', 'Contracts', 
+                  'Deficit * Euro', 'EDP * Election Timing',
+                  'Elect. Timing * Fin. Stress',
+                  'Unscheduled Elect. * Fin. Stress', 
+                  'Scheduled Elect. * Fin. Stress', 'Deficit * Contracts')
+
+
+stargazer(m2_1, m2_2, m2_3, m2_4, m2_5, m2_6, m2_7, m2_8, m2_9, m2_10, m2_11,
+          omit = 'as.factor*', 
+          omit.stat = c('f', 'ser'), # so that it fits on the page
+          out.header = F,
+          #add.lines = list(c('Country FE?', rep('Yes', 9))),
+          dep.var.labels = 'Cumulative Deficit Revisions',
+          covariate.labels = var_labels_1,
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          label = 'deficit_results',
+          title = 'Linear Regression Estimation of Deficit Revisions (Full Sample)',
+          add.lines = list(c('Country FE?', rep('Yes', 11))),
+          font.size = 'tiny',
+          out = 'working_paper/tables/deficit_regressions.tex')

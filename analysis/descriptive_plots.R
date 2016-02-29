@@ -14,9 +14,9 @@ library(DataCombine)
 setwd('/git_repositories/eurostat_revisions/')
 
 # Import data and do basic tidying
-comb <- import('data_cleaning/main_merged.csv')   
+comb <- import('data_cleaning/main_merged.csv')
 
-comb$endog_3 <- factor(comb$endog_3, 
+comb$endog_3 <- factor(comb$endog_3,
                        levels = c(1:3),
                        labels = c('Unscheduled', 'Scheduled', 'No election'))
 
@@ -49,7 +49,7 @@ median_rev_timing <- debt %>% group_by(yrcurnt_corrected, counter) %>%
 median_rev_timing$yrcurnt_corrected <- as.factor(
                                             median_rev_timing$yrcurnt_corrected)
 
-timing_debt <- ggplot(median_rev_timing, aes(counter, median_revision, 
+timing_debt <- ggplot(median_rev_timing, aes(counter, median_revision,
                               group = yrcurnt_corrected,
                               colour = yrcurnt_corrected,
                               linetype = yrcurnt_corrected)) +
@@ -65,7 +65,7 @@ timing_debt <- ggplot(median_rev_timing, aes(counter, median_revision,
 median_rev_endog <- debt %>% group_by(endog_3, counter) %>%
     summarise(median_revision = median(cum_revision, na.rm = T))
 
-endog_debt <- ggplot(median_rev_endog, aes(counter, median_revision, 
+endog_debt <- ggplot(median_rev_endog, aes(counter, median_revision,
                                            group = endog_3, colour = endog_3,
                              linetype = endog_3)) +
     geom_line(size = 1) +
@@ -76,9 +76,9 @@ endog_debt <- ggplot(median_rev_endog, aes(counter, median_revision,
     xlab('') +
     theme_bw()
 
-pdf(file = 'working_paper/figures/median_debt_revisions.pdf', 
+pdf(file = 'working_paper/figures/median_debt_revisions.pdf',
     width = 11, height = 7)
-grid.arrange(timing_debt, endog_debt, nrow = 1, 
+grid.arrange(timing_debt, endog_debt, nrow = 1,
         bottom = '\nNumber of Eurostat Revisions Since Original Budget Data was Released')
 dev.off()
 
@@ -104,7 +104,7 @@ median_rev_timing <- deficit %>% group_by(yrcurnt_corrected, counter) %>%
 median_rev_timing$yrcurnt_corrected <- as.factor(
     median_rev_timing$yrcurnt_corrected)
 
-timing_deficit <- ggplot(median_rev_timing, aes(counter, median_revision, 
+timing_deficit <- ggplot(median_rev_timing, aes(counter, median_revision,
                                              group = yrcurnt_corrected,
                                              colour = yrcurnt_corrected,
                                              linetype = yrcurnt_corrected)) +
@@ -120,7 +120,7 @@ timing_deficit <- ggplot(median_rev_timing, aes(counter, median_revision,
 median_rev_endog <- deficit %>% group_by(endog_3, counter) %>%
     summarise(median_revision = median(cum_revision, na.rm = T))
 
-endog_deficit <- ggplot(median_rev_endog, aes(counter, median_revision, 
+endog_deficit <- ggplot(median_rev_endog, aes(counter, median_revision,
                                            group = endog_3, colour = endog_3,
                                            linetype = endog_3)) +
     geom_line(size = 1) +
@@ -131,46 +131,48 @@ endog_deficit <- ggplot(median_rev_endog, aes(counter, median_revision,
     xlab('') +
     theme_bw()
 
-pdf(file = 'working_paper/figures/median_deficit_revisions.pdf', 
+pdf(file = 'working_paper/figures/median_deficit_revisions.pdf',
     width = 11, height = 7)
-grid.arrange(timing_deficit, endog_deficit, nrow = 1, 
+grid.arrange(timing_deficit, endog_deficit, nrow = 1,
         bottom = '\nNumber of Eurostat Revisions Since Original Budget Data was Released')
 dev.off()
 
 
 ## Create median revision for being in an EDP
-median_rev_edp <- debt %>% group_by(excessdef, counter) %>%
+median_rev_edp <- deficit %>% group_by(excessdef, counter) %>%
     summarise(median_revision = median(cum_revision, na.rm = T))
 
-edp_debt <- ggplot(median_rev_edp, aes(counter, median_revision, 
+edp_deficit <- ggplot(median_rev_edp, aes(counter, median_revision,
                                            group = excessdef, colour = excessdef,
                                            linetype = excessdef)) +
     geom_line(size = 1) +
     scale_linetype(name = 'EDP?') +
     scale_color_brewer(palette = 'Set2', name = 'EDP?') +
     scale_x_continuous(breaks = c(1, 3, 5, 7)) +
+    scale_y_continuous(limits = c(-0.2, 0)) +
     ylab('') +
     xlab('') +
     theme_bw()
 
 ## Create median revision for Eurozone membership
-median_rev_euro <- debt %>% group_by(euro_member, counter) %>%
+median_rev_euro <- deficit %>% group_by(euro_member, counter) %>%
     summarise(median_revision = median(cum_revision, na.rm = T))
 
-euro_debt <- ggplot(median_rev_euro, aes(counter, median_revision, 
+euro_deficit <- ggplot(median_rev_euro, aes(counter, median_revision,
                                        group = euro_member, colour = euro_member,
                                        linetype = euro_member)) +
     geom_line(size = 1) +
     scale_linetype(name = 'Euro?') +
     scale_color_brewer(palette = 'Set2', name = 'Euro?') +
     scale_x_continuous(breaks = c(1, 3, 5, 7)) +
+    scale_y_continuous(limits = c(-0.2, 0)) +
     ylab('') +
     xlab('') +
     theme_bw()
 
 
-pdf(file = 'working_paper/figures/median_debt_revisions_edp_euro.pdf', 
+pdf(file = 'working_paper/figures/median_deficit_revisions_edp_euro.pdf',
     width = 11, height = 7)
-grid.arrange(edp_debt, euro_debt, nrow = 1, 
+grid.arrange(edp_deficit, euro_deficit, nrow = 1,
              bottom = '\nNumber of Eurostat Revisions Since Original Budget Data was Released')
 dev.off()
