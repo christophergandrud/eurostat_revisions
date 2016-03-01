@@ -41,8 +41,8 @@ dev.off()
 ## Debt Euro ------
 # Reverse order for plotting
 m1_debt_euro <- lm(cum_revision ~ lag_cum_revision +
-                   euro_member * central_gov_debt +
-                   as.factor(country), data = debt)
+                       euro_member * central_gov_debt +
+                       as.factor(country), data = debt)
 
 debt_euro_me <- plot_me(m1_debt_euro, term1 = 'euro_member', 
                         term2 = 'central_gov_debt',
@@ -53,10 +53,10 @@ debt_euro_me <- plot_me(m1_debt_euro, term1 = 'euro_member',
     ylab('Marginal Effect of Being a Eurozone Member\n')
 
 ## Election timing and EDP -----------
-## Reverse order
+## Reverse order
 m1_edp_timing <- lm(cum_revision ~ lag_cum_revision + excessdef * yrcurnt_corrected + 
-                    fsi_annual_mean +
-                    as.factor(country), data = debt)
+                        fsi_annual_mean +
+                        as.factor(country), data = debt)
 
 timing_edp_me <- plot_me(m1_edp_timing, term1 = 'excessdef', 
                          term2 = 'yrcurnt_corrected',
@@ -73,13 +73,13 @@ dev.off()
 
 
 m1_contracts_debt <- lm(cum_revision ~ lag_cum_revision + 
-                contracts * central_gov_debt + 
-                as.factor(country),
-            data = debt)
+                            contracts * central_gov_debt + 
+                            as.factor(country),
+                        data = debt)
 
 contracts_debt_me <- plot_me(m1_contracts_debt, term1 = 'contracts', 
-                         term2 = 'central_gov_debt',
-                         fitted2 = seq(5, 200, by = 5)) +
+                             term2 = 'central_gov_debt',
+                             fitted2 = seq(5, 200, by = 5)) +
     scale_x_continuous(labels = 4:0) +
     xlab('\nCentral Government Debt/GDP (%)') + 
     ylab('Marginal Effect of Being a 1 Unit Increase in Contracts\n')

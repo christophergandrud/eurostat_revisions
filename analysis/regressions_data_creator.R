@@ -94,8 +94,9 @@ cent_debt_raw <- WDI(indicator = c('GC.DOD.TOTL.GD.ZS', 'PA.NUS.FCRF',
                               'NY.GDP.MKTP.KD.ZG', 'AG.LND.ARBL.ZS'), 
                 start = 2000, end = 2015)
 
-cent_debt_raw <- cent_debt_raw %>% select(country, year, GC.DOD.TOTL.GD.ZS, PA.NUS.FCRF,
-                                NY.GDP.MKTP.KD.ZG) %>%
+cent_debt_raw <- cent_debt_raw %>% select(country, year, PA.NUS.FCRF,
+                                NY.GDP.MKTP.KD.ZG,
+                                GC.DOD.TOTL.GD.ZS) %>%
     rename(central_gov_debt = GC.DOD.TOTL.GD.ZS) %>%
     rename(exchange_usd = PA.NUS.FCRF) %>%
     rename(gdp_growth = NY.GDP.MKTP.KD.ZG)
@@ -106,6 +107,10 @@ euro_exchange <- cent_debt_raw %>% filter(country == 'Euro area') %>%
 
 cent_debt_raw$country <- countrycode(cent_debt_raw$country, origin = 'country.name',
                                 destination = 'country.name')
+
+cent_debt_raw <- slide(cent_debt_raw, Var = 'central_gov_debt', 
+                       TimeVar = 'year', GroupVar = 'country', 
+                       NewVar = 'lag_cent_debt', slideBy = -1)
 
 ## Eurostat General Government Debt ------
 # Downloaded from: http://ec.europa.eu/eurostat/en/web/products-datasets/-/TSDDE410
@@ -134,6 +139,10 @@ gen_debt_raw <- gen_debt_raw %>% DropNA('country')
 
 gen_debt_raw <- gen_debt_raw %>% select(country, year, gen_gov_debt) %>%
     arrange(country, year)
+
+gen_debt_raw <- slide(gen_debt_raw, Var = 'gen_gov_debt', 
+                       TimeVar = 'year', GroupVar = 'country', 
+                       NewVar = 'lag_gen_debt', slideBy = -1)
 
 debt_debt <- merge(cent_debt_raw, gen_debt_raw, by = c('country', 'year'), 
                       all = T)
@@ -165,6 +174,10 @@ deficit_raw <- deficit_raw %>% DropNA('country')
 
 deficit_raw <- deficit_raw %>% select(country, year, general_gov_deficit) %>%
     arrange(country, year)
+
+deficit_raw <- slide(deficit_raw, Var = 'general_gov_deficit', 
+                      TimeVar = 'year', GroupVar = 'country', 
+                      NewVar = 'lag_gen_deficit', slideBy = -1)
 
 deficit_debt <- merge(debt_debt, deficit_raw, by = c('country', 'year'), 
                       all = T)
