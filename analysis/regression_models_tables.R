@@ -246,7 +246,14 @@ no_dups <- comb %>% FindDups(comb, Vars = c('country', 'year'), NotDups = T)
 no_dups$unsched <- 0
 no_dups$unsched[no_dups$endog_3 == 'Unscheduled'] <- 1
 
+no_dups <- slide(no_dups, Var = 'fsi_annual_mean', TimeVar = 'version', 
+                 GroupVar = 'country', NewVar = 'lag_stress',
+                 slideBy = -1)
+
 logit_endog <- glm(unsched ~ fsi_annual_mean + as.factor(country), 
+                   data = no_dups)
+
+logit_endog_lag <- glm(unsched ~ lag_stress + as.factor(country), 
                    data = no_dups)
 
 stargazer(logit_endog, omit = 'as.factor*',
