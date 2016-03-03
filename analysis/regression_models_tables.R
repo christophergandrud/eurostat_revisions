@@ -52,12 +52,12 @@ debt <- slide(debt, Var = 'cum_revision', TimeVar = 'version',
 
 # Debt Models
 m1_1 <- lm(cum_revision ~ lag_cum_revision + 
-               excessdef + euro_member +
+               excessdef + euro_member + 
                as.factor(country),
            data = debt)
 
 m1_2 <- lm(cum_revision ~ lag_cum_revision + 
-               central_gov_debt + euro_member +
+               central_gov_debt + euro_member + monitor_n_DR +
                as.factor(country),
            data = debt)
 
@@ -133,6 +133,11 @@ m1_gdp_trans <- lm(cum_revision ~ lag_cum_revision +
                 fiscal_trans_gfs + gdp_growth + 
                 as.factor(country),
             data = debt)
+
+m1_indep_debt_monitor <- lm(cum_revision ~ lag_cum_revision + 
+               central_gov_debt + monitor_n_DR +
+               as.factor(country),
+           data = debt)
 
 
 # Create output table
