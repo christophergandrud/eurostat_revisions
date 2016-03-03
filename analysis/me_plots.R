@@ -31,13 +31,6 @@ fsi_scheduled_me <- plot_me(m1_8, term1 = 'endog_3Unscheduled',
     xlab('') + 
     ylab('Margingal Effect of an Unscheduled Election\n')
 
-pdf(file = 'working_paper/figures/fsi_elect_me.pdf', 
-    width = 11, height = 7)
-grid.arrange(fsi_elect_me, fsi_scheduled_me, nrow = 1,
-             bottom = 'Mean Annual Financial Market Stress')
-dev.off()
-
-
 ## Debt Euro ------
 # Reverse order for plotting
 m1_debt_euro <- lm(cum_revision ~ lag_cum_revision +
@@ -65,9 +58,11 @@ timing_edp_me <- plot_me(m1_edp_timing, term1 = 'excessdef',
     xlab('\nYears to Election') + 
     ylab('Marginal Effect of Being in an Excessive Deficit Procedure\n')
 
-pdf(file = 'working_paper/figures/edp_debt_elect_me.pdf', 
-    width = 11, height = 7)
-grid.arrange(debt_euro_me, timing_edp_me, nrow = 1)
+pdf(file = 'working_paper/figures/debt_me_comb.pdf', 
+    width = 11, height = 11)
+grid.arrange(debt_euro_me, timing_edp_me, 
+             fsi_elect_me, fsi_scheduled_me, nrow = 2, ncol = 2,
+             bottom = 'Mean Annual Financial Market Stress')
 dev.off()
 
 

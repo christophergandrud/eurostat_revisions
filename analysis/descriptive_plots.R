@@ -18,7 +18,7 @@ comb <- import('data_cleaning/main_merged.csv')
 
 comb$endog_3 <- factor(comb$endog_3,
                        levels = c(1:3),
-                       labels = c('Unscheduled', 'Scheduled', 'No election'))
+                       labels = c('Unsched.', 'Sched.', 'None'))
 
 comb$endog_3 <- relevel(comb$endog_3, ref = 'No election')
 
@@ -76,9 +76,39 @@ endog_debt <- ggplot(median_rev_endog, aes(counter, median_revision,
     xlab('') +
     theme_bw()
 
+## Create median revision for being in an EDP
+median_rev_edp <- debt %>% group_by(excessdef, counter) %>%
+    summarise(median_revision = median(cum_revision, na.rm = T))
+
+edp_debt <- ggplot(median_rev_edp, aes(counter, median_revision,
+                                          group = excessdef, colour = excessdef,
+                                          linetype = excessdef)) +
+    geom_line(size = 1) +
+    scale_linetype(name = 'EDP?') +
+    scale_color_brewer(palette = 'Set2', name = 'EDP?') +
+    scale_x_continuous(breaks = c(1, 3, 5, 7)) +
+    ylab('') +
+    xlab('') +
+    theme_bw()
+
+## Create median revision for Eurozone membership
+median_rev_euro <- debt %>% group_by(euro_member, counter) %>%
+    summarise(median_revision = median(cum_revision, na.rm = T))
+
+euro_debt <- ggplot(median_rev_euro, aes(counter, median_revision,
+                                            group = euro_member, colour = euro_member,
+                                            linetype = euro_member)) +
+    geom_line(size = 1) +
+    scale_linetype(name = 'Euro?') +
+    scale_color_brewer(palette = 'Set2', name = 'Euro?') +
+    scale_x_continuous(breaks = c(1, 3, 5, 7)) +
+    ylab('') +
+    xlab('') +
+    theme_bw()
+
 pdf(file = 'working_paper/figures/median_debt_revisions.pdf',
-    width = 11, height = 7)
-grid.arrange(timing_debt, endog_debt, nrow = 1,
+    width = 11, height = 11)
+grid.arrange(timing_debt, endog_debt, edp_debt, euro_debt, nrow = 2, ncol = 2,
         bottom = '\nNumber of Eurostat Revisions Since Original Budget Data was Released')
 dev.off()
 
