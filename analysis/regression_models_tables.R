@@ -57,7 +57,7 @@ m1_1 <- lm(cum_revision ~ lag_cum_revision +
            data = debt)
 
 m1_2 <- lm(cum_revision ~ lag_cum_revision + 
-               central_gov_debt + euro_member + monitor_n_DR +
+               central_gov_debt + euro_member + 
                as.factor(country),
            data = debt)
 
@@ -134,6 +134,11 @@ m1_gdp_trans <- lm(cum_revision ~ lag_cum_revision +
                 as.factor(country),
             data = debt)
 
+m1_indep <- lm(cum_revision ~ lag_cum_revision + 
+               central_gov_debt + euro_member + monitor_n_DR +
+               as.factor(country),
+           data = debt)
+
 m1_indep_debt_monitor <- lm(cum_revision ~ lag_cum_revision + 
                central_gov_debt + monitor_n_DR +
                as.factor(country),
@@ -163,7 +168,7 @@ stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10, m1_11,
           star.cutoffs = c(0.05, 0.01, 0.001),
           label = 'debt_results',
           title = 'Linear Regression Estimation of Debt Revisions (Full Sample)',
-          add.lines = list(c('Country FE?', rep('Yes', 11))),
+          add.lines = list(c('Country FE?', rep('Yes', 12))),
           font.size = 'tiny',
           out = 'working_paper/tables/debt_regressions.tex')
 
@@ -277,7 +282,7 @@ stargazer(m_no_g1, m_no_g2, m_no_g3, m_no_g4, m_no_g5, m_no_g6, m_no_g7,
           covariate.labels = var_labels_2,
           star.cutoffs = c(0.05, 0.01, 0.001),
           title = 'Linear Regression Estimation of Debt Revisions (Excluding Greece)',
-          add.lines = list(c('Country FE?', rep('Yes', 11))),
+          add.lines = list(c('Country FE?', rep('Yes', 13))),
           font.size = 'tiny',
           out = 'working_paper/tables/debt_regressions_no_greece.tex')
 
@@ -412,6 +417,6 @@ stargazer(m2_1, m2_2, m2_3, m2_4, m2_5, m2_6, m2_7, m2_8, m2_9, m2_10, m2_11,
           star.cutoffs = c(0.05, 0.01, 0.001),
           label = 'deficit_results',
           title = 'Linear Regression Estimation of Deficit Revisions (Full Sample)',
-          add.lines = list(c('Country FE?', rep('Yes', 11))),
+          add.lines = list(c('Country FE?', rep('Yes', 12))),
           font.size = 'tiny',
           out = 'working_paper/tables/deficit_regressions.tex')
