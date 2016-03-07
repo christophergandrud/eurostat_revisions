@@ -12,6 +12,9 @@
 vignettes/*.html
 vignettes/*.pdf
 
+# No submission version
+submission/*
+
 # Nohup
 nohup.out
 nohup.out.swp
