@@ -1,8 +1,3 @@
-
-
-#pFtest(fixed, normal)
-
-
 # ---------------------------------------------------------------------------- #
 # Eurostat revisions and EDP, debt, elections, and contracts models
 # Christopher Gandrud
@@ -144,7 +139,8 @@ m1_indep_debt_monitor <- lm(cum_revision ~ lag_cum_revision +
                as.factor(country),
            data = debt)
 
-
+#pFtest(fixed, normal)
+s
 # Create output table
 var_labels_1 <- c('Cum Revisions (lag)', 'EDP', 'Revised Cent. Gov. Debt', 
                   'Euro Member',
@@ -298,10 +294,16 @@ no_dups <- slide(no_dups, Var = 'fsi_annual_mean', TimeVar = 'version',
                  slideBy = -1)
 
 logit_endog <- glm(unsched ~ fsi_annual_mean + as.factor(country), 
-                   data = no_dups)
+                   data = no_dups, family = 'binomial')
+
+rare_logit <- zelig(unsched ~ fsi_annual_mean + as.factor(country), 
+              data = no_dups, model = 'relogit')
 
 logit_endog_lag <- glm(unsched ~ lag_stress + as.factor(country), 
-                   data = no_dups)
+                   data = no_dups, family = 'binomial')
+
+rare_logit_lag <- zelig(unsched ~ lag_stress + as.factor(country), 
+                    data = no_dups, model = 'relogit')
 
 stargazer(logit_endog, omit = 'as.factor*',
           covariate.labels = 'Financial Stress',
