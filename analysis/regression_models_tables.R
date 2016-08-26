@@ -11,6 +11,7 @@ library(gridExtra)
 library(devtools)
 library(stargazer)
 library(DataCombine)
+library(Zelig)
 
 # Set working directory. Change as needed
 setwd('/git_repositories/eurostat_revisions/')
@@ -140,7 +141,7 @@ m1_indep_debt_monitor <- lm(cum_revision ~ lag_cum_revision +
            data = debt)
 
 #pFtest(fixed, normal)
-s
+
 # Create output table
 var_labels_1 <- c('Cum Revisions (lag)', 'EDP', 'Revised Cent. Gov. Debt', 
                   'Euro Member',
@@ -198,7 +199,7 @@ m_no_g5 <- lm(cum_revision ~ lag_cum_revision +
                   central_gov_debt + 
                   yrcurnt_corrected + fsi_annual_mean +
                   as.factor(country),
-              data =debt_no_greece)
+              data = debt_no_greece)
 
 m_no_g6 <- lm(cum_revision ~ lag_cum_revision + 
                   central_gov_debt + 

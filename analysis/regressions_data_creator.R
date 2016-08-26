@@ -84,22 +84,25 @@ endog_election <- endog_election %>% select(country, year, endog_3)
 
 endog_gandrud <- import('data_cleaning/raw/endog_gandrud.csv')
 
-endog_election <- rbind_all(list(endog_election, endog_gandrud))
+endog_election <- bind_rows(list(endog_election, endog_gandrud))
 endog_election <- endog_election %>% arrange(country, year)
 
 FindDups(endog_election, c('country', 'year'))
 
 ## Debt figures from the World Bank Development Indicators ----
 cent_debt_raw <- WDI(indicator = c('GC.DOD.TOTL.GD.ZS', 'PA.NUS.FCRF', 
-                              'NY.GDP.MKTP.KD.ZG', 'AG.LND.ARBL.ZS'), 
+                              'NY.GDP.MKTP.KD.ZG', 'AG.LND.ARBL.ZS', 
+                              'GFDD.OI.19'), 
                 start = 2000, end = 2015)
 
 cent_debt_raw <- cent_debt_raw %>% select(country, year, PA.NUS.FCRF,
                                 NY.GDP.MKTP.KD.ZG,
-                                GC.DOD.TOTL.GD.ZS) %>%
+                                GC.DOD.TOTL.GD.ZS,
+                                GFDD.OI.19) %>%
     rename(central_gov_debt = GC.DOD.TOTL.GD.ZS) %>%
     rename(exchange_usd = PA.NUS.FCRF) %>%
-    rename(gdp_growth = NY.GDP.MKTP.KD.ZG)
+    rename(gdp_growth = NY.GDP.MKTP.KD.ZG) %>%
+    rename(lv_crisis = GFDD.OI.19)
 
 # Extract euro exchange rate and place it in for euro countries
 euro_exchange <- cent_debt_raw %>% filter(country == 'Euro area') %>% 
