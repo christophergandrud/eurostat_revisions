@@ -25,12 +25,12 @@ debt_euro_me <- plot_me(m1_2, term1 = 'euro_member',
 # Election timing and Unscheduled elections ----------
 fs_scheduled_me <- plot_me(m1_10, term1 = 'finstress_mean', 
                             term2 = 'endog_3') +
-    xlab('Election Type') + 
+    xlab('\nElection Type') + 
     ylab('Margingal Effect of Financial Market Stress\n')
 
 
 pdf(file = 'working_paper/figures/debt_me_comb.pdf', 
-    width = 11, height = 11)
+    width = 11, height = 6)
 grid.arrange(debt_euro_me, fs_scheduled_me, nrow = 1, ncol = 2)
 dev.off()
 

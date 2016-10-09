@@ -37,7 +37,7 @@ comb$yrcurnt_corrected <- reverser(comb$yrcurnt_corrected)
 #comb$finstress_mean <- comb$finstress_mean * 100
 
 ## Estimate models
-# debt revisions ---------
+# Debt revisions ---------
 debt <- comb %>% filter(component == 'debt')
 FindDups(debt, c('country', 'year', 'version'))
 
@@ -234,7 +234,7 @@ var_labels_2 <- c('Revised Cent. Gov. Debt', 'Euro Member', 'EDP',
 
 # Create output table
 stargazer(m_no_g1, m_no_g2, m_no_g3, m_no_g4, m_no_g5, m_no_g6, m_no_g7,
-          m_no_g8, m_no_g9, m_no_g10
+          m_no_g8, m_no_g9, m_no_g10,
           omit = 'as.factor*',
           omit.stat = c('f', 'ser'), # so that it fits on the page
           out.header = F,
