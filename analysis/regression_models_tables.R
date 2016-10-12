@@ -46,6 +46,10 @@ FindDups(debt, c('country', 'year', 'version'))
 debt <- debt[!duplicated(debt[, c('country', 'year')], fromLast = TRUE), ]
 debt <- subset(debt, years_since_original == 3)
 
+# Export for reanalysis in Stata with clustered standard errors rather than
+# fixed effects
+foreign::write.dta(debt, 'data_cleaning/debt_sample.dta')
+
 # Debt Models
 m1_1 <- lm(cum_revision ~
                central_gov_debt + euro_member + excessdef +
