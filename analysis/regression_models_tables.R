@@ -34,7 +34,7 @@ comb$from_2010[comb$year >= 2010] <- 1
 comb$yrcurnt_corrected <- reverser(comb$yrcurnt_corrected)
 
 # Put FinStress on a more easily interpretable scale
-#comb$finstress_mean <- comb$finstress_mean * 100
+comb$finstress_mean <- comb$finstress_mean * 100
 
 ## Estimate models
 # Debt revisions ---------
@@ -63,38 +63,37 @@ m1_2 <- lm(cum_revision ~
 
 m1_3 <- lm(cum_revision ~
                central_gov_debt + euro_member +
-               yrcurnt_corrected + finstress_mean +
+               finstress_mean + yrcurnt_corrected +
                as.factor(country),
            data = debt)
 
 m1_4 <- lm(cum_revision ~
-               central_gov_debt + euro_member +
-               yrcurnt_corrected * finstress_mean +
+               central_gov_debt + euro_member *
+               finstress_mean +
                as.factor(country),
            data = debt)
 
 m1_5 <- lm(cum_revision ~
                central_gov_debt + euro_member +
-               endog_3 + finstress_mean +
+               finstress_mean * yrcurnt_corrected +
                as.factor(country),
            data = debt)
 
 m1_6 <- lm(cum_revision ~
                central_gov_debt + euro_member +
-               endog_3 * finstress_mean +
+               finstress_mean + endog_3 +
                as.factor(country),
            data = debt)
 
 m1_7 <- lm(cum_revision ~
                central_gov_debt + euro_member +
-               fiscal_trans_gfs + gdp_growth +
-                as.factor(country),
-            data = debt)
+               finstress_mean * endog_3 +
+               as.factor(country),
+           data = debt)
 
 m1_8 <- lm(cum_revision ~
                central_gov_debt + euro_member +
-               yrcurnt_corrected * finstress_mean +
-                fiscal_trans_gfs + gdp_growth +
+               fiscal_trans_gfs + gdp_growth +
                 as.factor(country),
             data = debt)
 
@@ -106,7 +105,7 @@ m1_9 <- lm(cum_revision ~
 
 m1_10 <- lm(cum_revision ~
                     central_gov_debt * euro_member + excessdef +
-                    endog_3 * finstress_mean +
+                    finstress_mean * endog_3 +
                     gdp_growth +
                     as.factor(country),
             data = debt)
@@ -123,23 +122,26 @@ m1_indep <- lm(cum_revision ~
                as.factor(country),
            data = debt)
 
-m1_indep_debt_monitor <- lm(cum_revision ~ lag_cum_revision +
+m1_indep_debt_monitor <- lm(cum_revision ~
                central_gov_debt + monitor_n_DR +
                as.factor(country),
            data = debt)
 
 # Create output table
 var_labels_1 <- c('Revised Cent. Gov. Debt', 'Euro Member', 'EDP',
+                  'Financial Stress',
                   'Election Timing', 'Unscheduled Elect.', 'Scheduled Elect.',
-                  'Financial Stress', 'Fiscal Transparency',
+                  'Fiscal Transparency',
                   'GDP Growth', 'Contracts',
                   'Debt * Euro',
+                  'Euro * Fin. Stress',
                   'Elect. Timing * Fin. Stress',
                   'Unscheduled Elect. * Fin. Stress',
                   'Scheduled Elect. * Fin. Stress')
 
 
-stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10,
+stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10, m1_11,
+          type = 'latex',
           omit = 'as.factor*',
           omit.stat = c('f', 'ser'), # so that it fits on the page
           out.header = F,

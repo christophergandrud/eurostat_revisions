@@ -49,9 +49,9 @@ sims <- qi_builder(m1_poly, newdata = newdata, slim = TRUE)
 
 
 p_poly <- ggplot(sims, aes(central_gov_debt, qi_median)) +
-    geom_ribbon(aes(ymin = qi_min, ymax = qi_max), alpha = 0.3) +
+    geom_ribbon(aes(ymin = qi_min, ymax = qi_max), alpha = 0.2) +
     geom_line() +
     xlab('\nCentral Government Debt (% of GDP)') +
-    ylab('Revisions (% of GDP)\n')
+    ylab('Expected Revisions (% of GDP)\n')
 
-ggsave()
+ggsave(p_poly, filename = 'working_paper/figures/debt_poly_sims_plot.pdf')
