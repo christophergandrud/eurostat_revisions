@@ -140,7 +140,7 @@ var_labels_1 <- c('Revised Cent. Gov. Debt', 'Euro Member', 'EDP',
                   'Scheduled Elect. * Fin. Stress')
 
 
-stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10, m1_11,
+stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10,
           type = 'latex',
           omit = 'as.factor*',
           omit.stat = c('f', 'ser'), # so that it fits on the page
@@ -151,7 +151,7 @@ stargazer(m1_1, m1_2, m1_3, m1_4, m1_5, m1_6, m1_7, m1_8, m1_9, m1_10, m1_11,
           star.cutoffs = c(0.05, 0.01, 0.001),
           label = 'debt_results',
           title = 'Linear Regression Estimation of Debt Revisions (Full Sample)',
-          add.lines = list(c('Country FE?', rep('Yes', 12))),
+          add.lines = list(c('Country FE?', rep('Yes', 10))),
           font.size = 'tiny',
           out = 'working_paper/tables/debt_regressions.tex')
 

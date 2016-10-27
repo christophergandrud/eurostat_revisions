@@ -33,14 +33,3 @@ pdf(file = 'working_paper/figures/debt_me_comb.pdf',
 grid.arrange(debt_euro_me, fs_scheduled_me, nrow = 1, ncol = 2)
 dev.off()
 
-
-
-m1_contracts_debt <- lm(cum_revision ~
-                            contracts * central_gov_debt +
-                            as.factor(country),
-                        data = debt)
-
-contracts_debt_me <- plot_me(m1_contracts_debt, term1 = 'contracts',
-                             term2 = 'central_gov_debt', ci_type = 'fdr') +
-    xlab('\nCentral Government Debt/GDP (%)') +
-    ylab('Marginal Effect of Being a 1 Unit Increase in Contracts\n')
