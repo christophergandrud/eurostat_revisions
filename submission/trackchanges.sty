@@ -1,6 +1,6 @@
 %%
 %% This file is part of TrackChanges
-%% Copyright 2006-2009
+%% Copyright 2006-2009 
 %%    Novimir Antoniuk Pablant <amicitas@users.sourceforge.net>
 %%    Felix Salfner <salfner@informatik.hu-berlin.de>
 %%
@@ -27,11 +27,11 @@
 %% trackchanges.sty
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% A graphical interface has been written to allow the changes made
-%% using this style file to be interactively accepted, rejected
+%% using this style file to be interactively accepted, rejected 
 %% or changed.
 %%   trackchanges.py
 %%
-%% To find the latest versions this latex style file and the
+%% To find the latest versions this latex style file and the 
 %% associated files file go to:
 %%   http://trackchanges.sourceforge.net/
 %%
@@ -41,7 +41,7 @@
 %%   Help files are included as part of this package:
 %%     ./documentation/web/html_css/help.html
 %%
-%%   TrackChanges adds the following 5 commands to allow for collaborative
+%%   TrackChanges adds the following 5 commands to allow for collaborative 
 %%   editing of LaTeX documents.
 %%
 %%     \add[editor]{text to add}
@@ -49,38 +49,38 @@
 %%     \change[editor]{text to remove}{text to add}
 %%     \annote[editor]{text to annotate}{note}
 %%     \note[editor]{note}
-%%
+%%  
 %%   In all cases 'editor' is optional.
-%%
+%% 
 %%   In order to have comments color coded by editor, the editors must
 %%   be added in the preamble.
 %%
 %%     \addeditor{editor}
 %%
-%%
+%% 
 %% Options
 %%
 %%   There are 5 display options. These are specified with the
 %%   \usepackage[options]{trackchanges)
 %%
 %%     finalold
-%%        Ignore all of the edits.
+%%        Ignore all of the edits.  
 %%        The document will look as if the edits had not been added.
 %%     finalnew
-%%        Accept all of the edits.
-%%        Notes will not be shown in the final output.
+%%        Accept all of the edits. 
+%%        Notes will not be shown in the final output. 
 %%     footnotes
 %%        Added text will be shown inline. Removed text and notes
 %%        will be shown as footnotes.
 %%        This is the default option.
 %%     margins
-%%        Added text will be shown inline. Removed text and notes
+%%        Added text will be shown inline. Removed text and notes 
 %%        will be shown in the margin.
 %%        Margin notes will be aligned with the edits when possible.
 %%     inline
 %%        All edits will be shown inline.
 %%
-%%   The following two options are to be used with the 'margins'
+%%   The following two options are to be used with the 'margins' 
 %%   display style.  They are used to make more space for the margin
 %%   notes.  By default the margins are left as in the original
 %%   document.
@@ -89,8 +89,8 @@
 %%        Move the text over to the left hand side.
 %%        The textwidth will stay the same.
 %%     adjustmargins
-%%        Reduce the textwidth and move the text over to the left
-%%        hand side.This option will produced the most space for
+%%        Reduce the textwidth and move the text over to the left 
+%%        hand side.This option will produced the most space for 
 %%        the margin notes.
 %%
 %%
@@ -112,7 +112,7 @@
 %%   The last argument specifies which, if any, arguments to pass
 %%   as plain text when the command is ignored.  If the last
 %%   argument is zero, then all of the arguments will be ignored.
-%%   If \color and \textcolor were not already on the ignore
+%%   If \color and \textcolor were not already on the ignore 
 %%   list then the following commands could be used to add them:
 %%
 %%     \tcignore{\textcolor}{2}{2}
@@ -126,7 +126,7 @@
 %%
 %%     \tcregister{<command name>}{<num args>}
 %%
-%%   All of the standard font switching command are registered by
+%%   All of the standard font switching command are registered by 
 %%   default.  If \bf and \emph were not already registered then
 %%   the following commands could be used to add them:
 %%
@@ -142,24 +142,24 @@
 %%
 %%   - If another package is used that adjusts the margins, it
 %%     can take precedence over the TrackChanges handling.
-%%     To make sure TrackChanges has the last word, load it
+%%     To make sure TrackChanges has the last word, load it 
 %%     after all other margin related packages.
 %%
 %%   - Incompatable with the package 'ulem'
 %%     Use the package 'soul' instead for underlining/strikeout.
 %%
 %%   - TrackChanges cannot handle certain kinds of commands inside
-%%     the edit commands.  In particular \color, \textcolor and
-%%     any commands from the underlining package 'soul' will not work.
+%%     the edit commands.  In particular \color, \textcolor and 
+%%     any commands from the underlining package 'soul' will not work.  
 %%     There are two ways to get around these issues.
 %%     1. The 'ignoremode' option can be used.
 %%          This will tell TrackChanges to ignore certain commands
 %%          (Including the ones mentioned above).
 %%          Additional commands can be added to the ignore list with
 %%          the \tcignore command.
-%%     2. Sometimes the problematic commands can be preceded by
+%%     2. Sometimes the problematic commands can be preceded by 
 %%        \protect. This however can have strange behavior.
-%%
+%% 
 %%   - TrackChanges requires special handling for certain kinds of
 %%     commands inside of edit commands.  These problematic commands
 %%     are generally font switching commands.  All of the common
@@ -167,7 +167,7 @@
 %%     are already handled.  If you run into an issue you can try
 %%     using \tcregister to register the problematic command.
 %%
-%%   - No easy way to tell TrackChanges not to split footnotes
+%%   - No easy way to tell TrackChanges not to split footnotes 
 %%     across multiple pages.
 %%
 %%   - Some other packages that take over footnote handling may be
@@ -184,7 +184,7 @@
 %% version 0.7.0, 2009-04-22 - Novimir Pablant
 %%     Overhauled how the editors are set up.  Now each editor can be
 %%       added simply by using the /addeditor{name} command.
-%%     Color system completely overhauled, now uses the 'soul' package.
+%%     Color system completely overhauled, now uses the 'soul' package.  
 %%     Added margin commands 'movemargins' and 'adjustmargins'.
 %%     Added an option ignoremode and a reimplementation of portions
 %%       of 'soul' to allow commands to be ignored inside edits.
@@ -197,7 +197,7 @@
 %% To do:
 %%   - Add ability to set custom colors.
 %%
-%%   - Create a better way of adding editors that does not have a
+%%   - Create a better way of adding editors that does not have a 
 %%     five editor limit.
 %%
 %%   - Check if the package 'ulem' is loaded, and issue an error.
@@ -219,7 +219,7 @@
 \RequirePackage{soul}
 \RequirePackage{morefloats}
 
-% I ran into some conflicts with other packages that deal
+% I ran into some conflicts with other packages that deal 
 % with footnotes.  Adding footmisc solved those problems for me.
 %\RequirePackage{footmisc}
 %\RequirePackage{manyfoot}
@@ -268,7 +268,7 @@
 %%
 %% -------------- Inhibit footnotes getting split across pages
 %% This will inhibit splitting completely.
-%% LaTeX will complain about `Underfull \vbox' unless
+%% LaTeX will complain about `Underfull \vbox' unless 
 %% \raggedbottom is also used.
 %
 %\interfootnotelinepenalty=10000
@@ -466,7 +466,7 @@
 %% --------------- define commands to color text.
 %%                 The first command works properly across paragraphs.
 %%                 The second works well with the footnote.
-%%
+%%                 
 %%                 The last two use the soul package.
 \newcommand{\usertext}[1]{\color{UserColor}{#1}\normalcolor}
 \newcommand{\usertextfoot}[1]{\textcolor{UserColor}{#1}}
@@ -557,7 +557,7 @@
       \marginText{#1}{\userst{#2}}%
     \else%
       \if@trackinline%
-        {\footnotesize\textsuperscript{\UserLabel}\usertext{\st{#2}}}%
+        {\footnotesize\textsuperscript{\UserLabel}\usertext{\st{#2}}}%     
       \else%
         \footnote{\UserLabel~\userst{#2}}%
       \fi%
@@ -586,7 +586,7 @@
       \marginText{#1}{\userst{#2}}%
     \else%
       \if@trackinline%
-        {\footnotesize\textsuperscript{\UserLabel}\usertext{\st{#2}}}%
+        {\footnotesize\textsuperscript{\UserLabel}\usertext{\st{#2}}}% 
       \else%
         \footnote{\UserLabel~\userst{#2}}%
       \fi%
@@ -737,7 +737,7 @@
 %% ---------------- Setup for actions to be taken after the preamble.
 \AtBeginDocument{
   \TC@checkCompatibility
-  \TC@checkDepreciated
+  \TC@checkDepreciated 
   \if@trackchanges
     \if@trackinmargins
       \setupMarginpar
@@ -805,13 +805,13 @@
 }
 
 
-%%
+%% 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Below are a set of definitions to add an ignore list to the soul
-%% package.
+%% package. 
 %%
 %% This is not a default as it reimplements some of the internals of
-%% the soul package.  If a new version of soul were to come out
+%% the soul package.  If a new version of soul were to come out 
 %% this stuff might break.
 \if@TCignoremode
 
@@ -828,11 +828,11 @@
 \newtoks\TC@ignores
 \newtoks\TC@emptyignores
 
-%% The commands are separated by \\. The first number is the
+%% The commands are separated by \\. The first number is the 
 %% number of inputs for the command. The command name
-%% is given next.  The last number specifies which input to
+%% is given next.  The last number specifies which input to 
 %% pass through.  If the last number is zero nothing will be
-%% passed.
+%% passed.  
 
 \TC@ignores={%
   \\2\textcolor{2}%
@@ -855,7 +855,7 @@
 }}
 
 
-%% Here I redefine \SOUL@dotoken.
+%% Here I redefine \SOUL@dotoken.  
 %% The new version also checks for ignores.
 \def\SOUL@dotoken#1{%
   \def\SOUL@@{\SOUL@addtoken{#1}}%
