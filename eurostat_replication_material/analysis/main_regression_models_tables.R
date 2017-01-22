@@ -9,7 +9,6 @@ library(dplyr)
 library(ggplot2)
 library(gridExtra)
 library(devtools)
-library(stargazer)
 library(DataCombine)
 library(Zelig)
 
